@@ -12,3 +12,6 @@ An online video curriculum platform project for online Education by team in NWPU
 8.在线聊天-支持语音、图片、文字三种载体
 9.在线练习-教师设置练习题，包括选择题和编程题，学生练习
 10.主页-课程推送，显示当前公开课程列表
+
+小组成员
+刘晔;王炫之;严少洁;李琪;朱松涛;吴泓雨;王剑春;刘宗昊;王琛理;卫宗旭
