@@ -1,7 +1,7 @@
 # NWPU_OnlineEducation  
 An online video curriculum platform project for online Education by team in NWPU  
 这是一个包含用户管理、直播教学、多媒体聊天以及实时练习反馈的系统  
-主要包含以下功能：  
+# 主要包含以下功能：  
 1.注册登陆  
 2.查看并修改个人信息  
 3.管理员信息管理  
@@ -13,5 +13,5 @@ An online video curriculum platform project for online Education by team in NWPU
 9.在线练习-教师设置练习题，包括选择题和编程题，学生练习  
 10.主页-课程推送，显示当前公开课程列表  
 
-小组成员  
+## 小组成员  
 刘晔;王炫之;严少洁;李琪;朱松涛;吴泓雨;王剑春;刘宗昊;王琛理;卫宗旭  
