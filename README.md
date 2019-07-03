@@ -17,7 +17,9 @@ An online video curriculum platform project for online Education by team in NWPU
 
 ## 2019-7-4 01:35:06
 **关于代码**  
-完成部分代码框架与接口配备，届时会将部分代码push至Code的Branch  
+完成部分代码框架与接口配备，~~届时会将部分代码push至Code的Branch~~  
+已经将一部分的前端代码上传至Cod分支  
+
 **关于文档**  
 需求已确认，但SRS等部分文档还未完善，计划于周五晚上完成  
 ```
