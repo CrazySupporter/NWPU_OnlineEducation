@@ -30,7 +30,7 @@ An online video curriculum platform project for online Education by team in NWPU
 `git clone -r Doc [地址]`
 克隆、修改并上传至Doc分支
 
-##2019-7-4 02:30:11  
+## 2019-7-4 02:30:11  
 需求已确认，但SRS等部分文档还未完善，计划于周五晚上完成  
 ```
 软件需求规格说明——SRS
