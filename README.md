@@ -41,5 +41,6 @@ An online video curriculum platform project for online Education by team in NWPU
 软件测试计划说明——STP
 ```
 
-## 2019-7-4 17:00:28  
-完成SRS1.0
+## 2019-7-4 17:29:03
+完成  SRS   1.0
+完成  SCMP  1.0
