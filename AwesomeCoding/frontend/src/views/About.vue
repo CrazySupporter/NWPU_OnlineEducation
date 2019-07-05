@@ -1,7 +1,7 @@
 <template>
     <div class="about">
-        <h1>AwesomeCoding 直播教学平台</h1>
-        <h2>开发团队：第15小组</h2>
-        <h3>西北工业大学软件学院</h3>
+        <h1>AwesomeCoding 计蒜客直播平台</h1>
+        <h2>开发团队：6得飞7©️</h2>
+        <h3>清华大学计算机科学与技术系</h3>
     </div>
 </template>

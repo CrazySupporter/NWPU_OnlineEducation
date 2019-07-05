@@ -1,0 +1,1367 @@
+[2019-01-19T10:51:15.533] [WARN] database - use_database ==> USE ac_database
+[2019-01-19T10:51:15.542] [WARN] database - create_user_table ==> CREATE TABLE IF NOT EXISTS `users`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `email` CHAR(30),`nickname` VARCHAR(40), `realname` VARCHAR(40), `role` INT UNSIGNED NOT NULL, `motto` VARCHAR(200), `registration_date` TIMESTAMP, `password` CHAR(40) NOT NULL, `phone` CHAR(11) NOT NULL, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T10:51:15.684] [WARN] database - create_class_table ==> CREATE TABLE IF NOT EXISTS `classes`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `imagepath` VARCHAR(500), `description` VARCHAR(500), `notice` VARCHAR(500), `title` VARCHAR(80) NOT NULL, `type` INT UNSIGNED, `registration_date` TIMESTAMP, `invitation_code` CHAR(40), PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T10:51:15.690] [WARN] database - create_class_user_table ==> CREATE TABLE IF NOT EXISTS `classusers`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `class_id` VARCHAR(40) NOT NULL, `role` INT UNSIGNED NOT NULL, `user_id` INT UNSIGNED NOT NULL,`registration_date` TIMESTAMP, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T10:51:15.696] [WARN] database - create_class_resources ==> CREATE TABLE IF NOT EXISTS `resources`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `class_id` INT UNSIGNED NOT NULL, `resource` CHAR(20), PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T10:51:15.702] [WARN] database - create_forums ==> CREATE TABLE IF NOT EXISTS `forums`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `userid` INT UNSIGNED NOT NULL, `classid` INT UNSIGNED NOT NULL, `message` VARCHAR(200), `registration_date` TIMESTAMP, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T10:51:15.707] [WARN] database - create_file_table ==> CREATE TABLE IF NOT EXISTS `files`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `user_id` INT UNSIGNED NOT NULL, `filename` VARCHAR(100), `type` CHAR(20), PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T10:51:15.712] [WARN] database - create_banned_list ==> CREATE TABLE IF NOT EXISTS `bannedlist`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `userid` INT UNSIGNED NOT NULL, `classid` INT UNSIGNED NOT NULL, `status` INT UNSIGNED NOT NULL, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T10:51:15.718] [WARN] database - create_content_table ==> CREATE TABLE IF NOT EXISTS `contents` (`code` CHAR(25) NOT NULL, `content` VARCHAR(10000) NOT NULL, `deltas` VARCHAR(10000) NOT NULL, PRIMARY KEY (`code`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T10:51:15.724] [WARN] database - create_problem_table ==> CREATE TABLE IF NOT EXISTS `problems` (`code` CHAR(20) NOT NULL, `title` VARCHAR(100) NOT NULL, `class_id` INT UNSIGNED NOT NULL, `type` INT UNSIGNED NOT NULL, `creater` INT UNSIGNED NOT NULL, `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, `state` INT UNSIGNED NOT NULL, PRIMARY KEY (`code`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T10:51:15.766] [WARN] database - create_choice_problem_table ==> CREATE TABLE IF NOT EXISTS `choice_problems` (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `code` CHAR(20) NOT NULL, `description` char(25) NOT NULL, `choice_count` INT NOT NULL DEFAULT 4, `choice_A` VARCHAR(400), `choice_B` VARCHAR(400), `choice_C` VARCHAR(400), `choice_D` VARCHAR(400), `choice_E` VARCHAR(400), `answer` CHAR(2), `solution` CHAR(25) NOT NULL, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T10:51:15.772] [WARN] database - create_choice_problem_answer_table ==> CREATE TABLE IF NOT EXISTS `choice_problem_answers` (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `user_id` INT UNSIGNED NOT NULL, `code` CHAR(20), `answer` CHAR(2), `time` TIMESTAMP, `type` INT UNSIGNED, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T10:51:15.796] [WARN] database - create_program_problem_table ==> CREATE TABLE IF NOT EXISTS `program_problems` (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `code` CHAR(20) NOT NULL, `language` CHAR(20) NULL, `description` CHAR(20) NOT NULL, `answer_program_id` CHAR(20) NOT NULL, `solution` CHAR(20) NOT NULL, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T10:51:15.819] [WARN] database - create_program_problem_answer_table ==> CREATE TABLE IF NOT EXISTS `program_problem_answers` (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `code` CHAR(20) NOT NULL, `problem_code` CHAR(20) NOT NULL, `user_id` INT UNSIGNED NOT NULL, `type` INT UNSIGNED, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T10:51:15.825] [WARN] database - create_class_file_table ==> CREATE TABLE IF NOT EXISTS `coursefiles`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `class_id` INT UNSIGNED NOT NULL, `file_id` INT UNSIGNED NOT NULL, `filename` VARCHAR(100) NOT NULL, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T10:51:15.830] [WARN] database - create_posts ==> CREATE TABLE IF NOT EXISTS `posts`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `userid` INT UNSIGNED NOT NULL, `forumid` INT UNSIGNED NOT NULL, `message` VARCHAR(200), `registration_date` TIMESTAMP, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T10:51:15.835] [WARN] database - create_lives ==> CREATE TABLE IF NOT EXISTS `lives`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `class` INT UNSIGNED NOT NULL, `liveplayer_uid` VARCHAR(50), `liveplayer_vid` VARCHAR(50), `password` VARCHAR(50), PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T10:51:15.840] [WARN] database - create_chat_record ==> CREATE TABLE IF NOT EXISTS `chat_record` (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `date_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, `course_id` VARCHAR(40) NOT NULL, `user_id` INT NOT NULL, `course_status` INT NOT NULL, `realname` VARCHAR(40), `type` VARCHAR(40) NOT NULL, `message` VARCHAR(200) NOT NULL, `path` VARCHAR(100), PRIMARY KEY (`id`) ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
+[2019-01-19T10:51:15.845] [WARN] database - create_class_cache_table ==> CREATE TABLE IF NOT EXISTS `class_caches` (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `class_id` INT UNSIGNED NOT NULL, `entry` CHAR(30) NOT NULL, `data` VARCHAR(1000), `create_time` TIMESTAMP NULL, `drop_time` TIMESTAMP NULL, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T10:51:15.850] [WARN] database - create_blacklisting ==> CREATE TABLE IF NOT EXISTS `blacklisting` (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `date_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, `class_id` INT NOT NULL, `user_id` INT NOT NULL, `realname` VARCHAR(40), PRIMARY KEY (`id`) ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
+[2019-01-19T10:51:15.856] [INFO] backend-http - Database Reinstalled!
+[2019-01-19T10:51:23.970] [INFO] backend-http - ::1 - - "GET / HTTP/1.1" 200 1378 "" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:24.077] [INFO] backend-http - ::1 - - "GET /static/css/app.4002ce28fb808ec76bf7c17832cace31.css HTTP/1.1" 200 221496 "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:24.078] [INFO] backend-http - ::1 - - "GET /static/liveplayer.js HTTP/1.1" 200 262025 "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:24.079] [INFO] backend-http - ::1 - - "GET /static/js/manifest.d8b61fd31b4d0b27ebf2.js HTTP/1.1" 200 6810 "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:24.081] [INFO] backend-http - ::1 - - "GET /static/js/app.090f29dee06032e62b10.js HTTP/1.1" 200 30795 "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:24.098] [INFO] backend-http - ::1 - - "GET /static/js/vendor.52b07ff70b5d5dc44899.js HTTP/1.1" 200 1164651 "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:24.913] [INFO] socket_log - >>a user connected
+[2019-01-19T10:51:25.000] [INFO] backend-http - ::1 - - "GET /api/user/session HTTP/1.1" 200 96 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:25.040] [INFO] backend-http - ::1 - - "GET /static/img/logo.10cbfa8.png HTTP/1.1" 200 10658 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:25.068] [INFO] database - SELECT * FROM classes WHERE type=1 LIMIT 0,20[FILLED.]
+[2019-01-19T10:51:25.070] [INFO] backend-http - ::1 - - "POST /api/class/public/fetch HTTP/1.1" 200 3140 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:25.484] [INFO] backend-http - ::1 - - "GET /images/1_1545325828944_english-learning-img.png HTTP/1.1" 500 1329 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:25.521] [INFO] backend-http - ::1 - - "GET /images/2_1545325802767_music-theory-img.jpg HTTP/1.1" 500 1329 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:25.521] [INFO] backend-http - ::1 - - "GET /images/3_1545325751016_C++-course-img.jpg HTTP/1.1" 500 1329 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:25.522] [INFO] backend-http - ::1 - - "GET /images/9_1543645658904_2-3.png HTTP/1.1" 500 1329 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:25.537] [INFO] backend-http - ::1 - - "GET /images/10_1543657718379_image.png HTTP/1.1" 500 1329 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:25.549] [INFO] backend-http - ::1 - - "GET /images/11_1545368937071_233.jpg HTTP/1.1" 500 1329 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:25.561] [INFO] backend-http - ::1 - - "GET /favicon.ico HTTP/1.1" 200 10658 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:30.525] [INFO] backend-http - ::1 - - "GET /static/js/21.2479d152935f9ab5e18f.js HTTP/1.1" 200 2474 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:30.526] [INFO] backend-http - ::1 - - "GET /static/js/12.e7f68204b4566e4dbbe0.js HTTP/1.1" 200 782 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:35.791] [INFO] database - SELECT * FROM users WHERE nickname = 'teacher'[FILLED.]
+[2019-01-19T10:51:35.794] [INFO] backend-http - ::1 - - "POST /api/user/login HTTP/1.1" 200 284 "http://localhost/user/sign_in" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:35.825] [INFO] backend-http - ::1 - - "GET / HTTP/1.1" 304 - "http://localhost/user/sign_in" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:35.838] [WARN] socket_log - >>a user disconnected
+[2019-01-19T10:51:35.851] [INFO] backend-http - ::1 - - "GET /static/css/app.4002ce28fb808ec76bf7c17832cace31.css HTTP/1.1" 304 - "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:35.858] [INFO] backend-http - ::1 - - "GET /static/liveplayer.js HTTP/1.1" 304 - "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:35.860] [INFO] backend-http - ::1 - - "GET /static/js/vendor.52b07ff70b5d5dc44899.js HTTP/1.1" 304 - "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:35.861] [INFO] backend-http - ::1 - - "GET /static/js/manifest.d8b61fd31b4d0b27ebf2.js HTTP/1.1" 304 - "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:35.861] [INFO] backend-http - ::1 - - "GET /static/js/app.090f29dee06032e62b10.js HTTP/1.1" 304 - "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:36.248] [INFO] socket_log - >>a user connected
+[2019-01-19T10:51:36.248] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T10:51:36.270] [INFO] backend-http - ::1 - - "GET /api/user/session HTTP/1.1" 200 231 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:36.276] [INFO] backend-http - ::1 - - "GET /static/img/logo.10cbfa8.png HTTP/1.1" 304 - "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:36.322] [INFO] database - SELECT * FROM classes WHERE type=1 LIMIT 0,20[FILLED.]
+[2019-01-19T10:51:36.323] [INFO] backend-http - ::1 - - "POST /api/class/public/fetch HTTP/1.1" 200 3140 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:36.422] [INFO] backend-http - ::1 - - "GET /images/1_1545325828944_english-learning-img.png HTTP/1.1" 500 1329 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:36.423] [INFO] backend-http - ::1 - - "GET /images/2_1545325802767_music-theory-img.jpg HTTP/1.1" 500 1329 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:36.423] [INFO] backend-http - ::1 - - "GET /images/3_1545325751016_C++-course-img.jpg HTTP/1.1" 500 1329 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:36.463] [INFO] backend-http - undefined - - "GET /images/9_1543645658904_2-3.png HTTP/1.1" 500 1329 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:36.464] [INFO] backend-http - ::1 - - "GET /images/10_1543657718379_image.png HTTP/1.1" 500 1329 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:36.482] [INFO] backend-http - ::1 - - "GET /images/11_1545368937071_233.jpg HTTP/1.1" 500 1329 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:41.657] [INFO] backend-http - ::1 - - "GET /static/js/12.e7f68204b4566e4dbbe0.js HTTP/1.1" 304 - "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:41.665] [INFO] backend-http - ::1 - - "GET /static/js/5.d368f7922b3453643929.js HTTP/1.1" 200 32430 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:41.683] [INFO] backend-http - ::1 - - "GET /static/js/0.a430ddf57803e2873642.js HTTP/1.1" 200 493613 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:41.774] [INFO] database - SELECT * FROM forums WHERE `userid` = 10[FILLED.]
+[2019-01-19T10:51:41.777] [INFO] backend-http - ::1 - - "POST /api/chat/info/query/user HTTP/1.1" 200 322 "http://localhost/user/profile" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:41.777] [INFO] database - select * from files where user_id = 10[FILLED.]
+[2019-01-19T10:51:41.778] [INFO] file_log - { sql: 'select * from files where user_id = 10',
+  status: 'SUCCESS.',
+  results: 
+   [ RowDataPacket {
+       id: 20,
+       user_id: 10,
+       filename: '5a424f304bda79a490aa5c8a7abd742a软工展示 操作指南.pdf',
+       type: null },
+     RowDataPacket {
+       id: 22,
+       user_id: 10,
+       filename: 'c911eb0cd2f480854713fc20dc31b162file-stl.pdf',
+       type: null },
+     RowDataPacket {
+       id: 24,
+       user_id: 10,
+       filename: '4e06ffdf3cde50ecbf8ebed28c2f749dfile-data-structure.pdf',
+       type: null },
+     RowDataPacket {
+       id: 25,
+       user_id: 10,
+       filename: 'a31c389eae3722b154be6c136881ff39计5年级%C2%A02017-2018%C2%A0学年个人荣誉公示.pdf',
+       type: null } ],
+  details: undefined }
+[2019-01-19T10:51:41.779] [INFO] backend-http - ::1 - - "POST /api/file/fetch HTTP/1.1" 200 779 "http://localhost/user/profile" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:41.786] [INFO] database - select cl.id, cl.title, liveplayer_vid as lvid, l.password as pw from classusers cu left join lives l on l.class = cu.class_id, classes cl where cu.user_id = 10 and cu.role = 0 and cl.id = cu.class_id[FILLED.]
+[2019-01-19T10:51:41.787] [INFO] backend-http - ::1 - - "POST /api/class/my_course/fetch HTTP/1.1" 200 966 "http://localhost/user/profile" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:50.371] [INFO] backend-http - ::1 - - "GET /api/file/download?filename=a31c389eae3722b154be6c136881ff39%E8%AE%A15%E5%B9%B4%E7%BA%A7%C2%A02017-2018%C2%A0%E5%AD%A6%E5%B9%B4%E4%B8%AA%E4%BA%BA%E8%8D%A3%E8%AA%89%E5%85%AC%E7%A4%BA.pdf HTTP/1.1" 500 1470 "http://localhost/user/profile" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:50.379] [WARN] socket_log - >>a user disconnected
+[2019-01-19T10:51:50.379] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T10:51:50.386] [INFO] backend-http - ::1 - - "GET /stylesheets/style.css HTTP/1.1" 200 111 "http://localhost/api/file/download?filename=a31c389eae3722b154be6c136881ff39%E8%AE%A15%E5%B9%B4%E7%BA%A7%C2%A02017-2018%C2%A0%E5%AD%A6%E5%B9%B4%E4%B8%AA%E4%BA%BA%E8%8D%A3%E8%AA%89%E5%85%AC%E7%A4%BA.pdf" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:53.165] [INFO] backend-http - ::1 - - "GET /user/profile HTTP/1.1" 200 1378 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:53.440] [INFO] socket_log - >>a user connected
+[2019-01-19T10:51:53.441] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T10:51:53.615] [INFO] database - select * from files where user_id = 10[FILLED.]
+[2019-01-19T10:51:53.615] [INFO] file_log - { sql: 'select * from files where user_id = 10',
+  status: 'SUCCESS.',
+  results: 
+   [ RowDataPacket {
+       id: 20,
+       user_id: 10,
+       filename: '5a424f304bda79a490aa5c8a7abd742a软工展示 操作指南.pdf',
+       type: null },
+     RowDataPacket {
+       id: 22,
+       user_id: 10,
+       filename: 'c911eb0cd2f480854713fc20dc31b162file-stl.pdf',
+       type: null },
+     RowDataPacket {
+       id: 24,
+       user_id: 10,
+       filename: '4e06ffdf3cde50ecbf8ebed28c2f749dfile-data-structure.pdf',
+       type: null },
+     RowDataPacket {
+       id: 25,
+       user_id: 10,
+       filename: 'a31c389eae3722b154be6c136881ff39计5年级%C2%A02017-2018%C2%A0学年个人荣誉公示.pdf',
+       type: null } ],
+  details: undefined }
+[2019-01-19T10:51:53.619] [INFO] backend-http - ::1 - - "POST /api/file/fetch HTTP/1.1" 200 779 "http://localhost/user/profile" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:53.620] [INFO] database - select cl.id, cl.title, liveplayer_vid as lvid, l.password as pw from classusers cu left join lives l on l.class = cu.class_id, classes cl where cu.user_id = 10 and cu.role = 0 and cl.id = cu.class_id[FILLED.]
+[2019-01-19T10:51:53.622] [INFO] database - SELECT * FROM forums WHERE `userid` = 10[FILLED.]
+[2019-01-19T10:51:53.624] [INFO] backend-http - ::1 - - "POST /api/class/my_course/fetch HTTP/1.1" 200 966 "http://localhost/user/profile" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:53.624] [INFO] backend-http - ::1 - - "POST /api/chat/info/query/user HTTP/1.1" 200 322 "http://localhost/user/profile" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:55.818] [INFO] backend-http - ::1 - - "GET /api/file/download?filename=c911eb0cd2f480854713fc20dc31b162file-stl.pdf HTTP/1.1" 500 1392 "http://localhost/user/profile" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:55.824] [WARN] socket_log - >>a user disconnected
+[2019-01-19T10:51:55.824] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T10:51:55.829] [INFO] backend-http - ::1 - - "GET /stylesheets/style.css HTTP/1.1" 304 - "http://localhost/api/file/download?filename=c911eb0cd2f480854713fc20dc31b162file-stl.pdf" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:57.798] [INFO] socket_log - >>a user connected
+[2019-01-19T10:51:57.799] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T10:51:57.913] [INFO] database - select * from files where user_id = 10[FILLED.]
+[2019-01-19T10:51:57.913] [INFO] file_log - { sql: 'select * from files where user_id = 10',
+  status: 'SUCCESS.',
+  results: 
+   [ RowDataPacket {
+       id: 20,
+       user_id: 10,
+       filename: '5a424f304bda79a490aa5c8a7abd742a软工展示 操作指南.pdf',
+       type: null },
+     RowDataPacket {
+       id: 22,
+       user_id: 10,
+       filename: 'c911eb0cd2f480854713fc20dc31b162file-stl.pdf',
+       type: null },
+     RowDataPacket {
+       id: 24,
+       user_id: 10,
+       filename: '4e06ffdf3cde50ecbf8ebed28c2f749dfile-data-structure.pdf',
+       type: null },
+     RowDataPacket {
+       id: 25,
+       user_id: 10,
+       filename: 'a31c389eae3722b154be6c136881ff39计5年级%C2%A02017-2018%C2%A0学年个人荣誉公示.pdf',
+       type: null } ],
+  details: undefined }
+[2019-01-19T10:51:57.915] [INFO] backend-http - ::1 - - "POST /api/file/fetch HTTP/1.1" 200 779 "http://localhost/user/profile" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:57.916] [INFO] database - select cl.id, cl.title, liveplayer_vid as lvid, l.password as pw from classusers cu left join lives l on l.class = cu.class_id, classes cl where cu.user_id = 10 and cu.role = 0 and cl.id = cu.class_id[FILLED.]
+[2019-01-19T10:51:57.917] [INFO] backend-http - ::1 - - "POST /api/class/my_course/fetch HTTP/1.1" 200 966 "http://localhost/user/profile" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:51:57.933] [INFO] database - SELECT * FROM forums WHERE `userid` = 10[FILLED.]
+[2019-01-19T10:51:57.934] [INFO] backend-http - ::1 - - "POST /api/chat/info/query/user HTTP/1.1" 200 322 "http://localhost/user/profile" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T10:53:17.879] [WARN] socket_log - >>a user disconnected
+[2019-01-19T10:53:17.879] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T10:53:19.021] [INFO] socket_log - >>a user connected
+[2019-01-19T10:53:19.022] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T10:56:01.048] [WARN] socket_log - >>a user disconnected
+[2019-01-19T10:56:01.050] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T10:56:01.912] [INFO] socket_log - >>a user connected
+[2019-01-19T10:56:01.912] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T10:56:59.565] [WARN] socket_log - >>a user disconnected
+[2019-01-19T10:56:59.566] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T10:57:02.182] [INFO] socket_log - >>a user connected
+[2019-01-19T10:57:02.182] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T11:10:37.886] [WARN] socket_log - >>a user disconnected
+[2019-01-19T11:10:37.887] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T11:10:40.105] [INFO] socket_log - >>a user connected
+[2019-01-19T11:10:40.105] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T11:12:02.164] [WARN] socket_log - >>a user disconnected
+[2019-01-19T11:12:02.165] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T11:12:02.991] [INFO] socket_log - >>a user connected
+[2019-01-19T11:12:02.992] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T11:12:58.891] [WARN] socket_log - >>a user disconnected
+[2019-01-19T11:12:58.891] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T11:13:00.310] [INFO] socket_log - >>a user connected
+[2019-01-19T11:13:00.311] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T11:13:30.321] [WARN] socket_log - >>a user disconnected
+[2019-01-19T11:13:30.321] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T11:13:32.025] [INFO] socket_log - >>a user connected
+[2019-01-19T11:13:32.025] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T11:14:02.033] [WARN] socket_log - >>a user disconnected
+[2019-01-19T11:14:02.033] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T11:14:03.302] [INFO] socket_log - >>a user connected
+[2019-01-19T11:14:03.302] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T11:14:33.310] [WARN] socket_log - >>a user disconnected
+[2019-01-19T11:14:33.311] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T11:14:34.104] [INFO] socket_log - >>a user connected
+[2019-01-19T11:14:34.105] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T11:16:26.241] [WARN] socket_log - >>a user disconnected
+[2019-01-19T11:16:26.241] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T11:16:27.909] [INFO] socket_log - >>a user connected
+[2019-01-19T11:16:27.909] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T11:17:24.357] [WARN] socket_log - >>a user disconnected
+[2019-01-19T11:17:24.357] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T11:17:25.903] [INFO] socket_log - >>a user connected
+[2019-01-19T11:17:25.903] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T11:35:19.281] [WARN] socket_log - >>a user disconnected
+[2019-01-19T11:35:19.282] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T11:35:21.152] [INFO] socket_log - >>a user connected
+[2019-01-19T11:35:21.153] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T11:36:18.693] [WARN] socket_log - >>a user disconnected
+[2019-01-19T11:36:18.693] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T11:36:20.028] [INFO] socket_log - >>a user connected
+[2019-01-19T11:36:20.029] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T11:37:16.310] [WARN] socket_log - >>a user disconnected
+[2019-01-19T11:37:16.311] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T11:37:17.157] [INFO] socket_log - >>a user connected
+[2019-01-19T11:37:17.157] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T11:38:13.241] [WARN] socket_log - >>a user disconnected
+[2019-01-19T11:38:13.241] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T11:38:15.306] [INFO] socket_log - >>a user connected
+[2019-01-19T11:38:15.306] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T11:41:21.347] [WARN] socket_log - >>a user disconnected
+[2019-01-19T11:41:21.347] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T11:41:22.140] [INFO] socket_log - >>a user connected
+[2019-01-19T11:41:22.141] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T11:42:44.382] [WARN] socket_log - >>a user disconnected
+[2019-01-19T11:42:44.382] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T11:42:46.243] [INFO] socket_log - >>a user connected
+[2019-01-19T11:42:46.244] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T11:43:16.256] [WARN] socket_log - >>a user disconnected
+[2019-01-19T11:43:16.256] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T11:43:18.060] [INFO] socket_log - >>a user connected
+[2019-01-19T11:43:18.060] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T11:43:48.073] [WARN] socket_log - >>a user disconnected
+[2019-01-19T11:43:48.074] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T11:43:50.226] [INFO] socket_log - >>a user connected
+[2019-01-19T11:43:50.226] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T11:44:20.237] [WARN] socket_log - >>a user disconnected
+[2019-01-19T11:44:20.237] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T11:44:21.210] [INFO] socket_log - >>a user connected
+[2019-01-19T11:44:21.210] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T11:45:17.224] [WARN] socket_log - >>a user disconnected
+[2019-01-19T11:45:17.224] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T11:45:18.989] [INFO] socket_log - >>a user connected
+[2019-01-19T11:45:18.989] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T11:46:15.334] [WARN] socket_log - >>a user disconnected
+[2019-01-19T11:46:15.334] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T11:46:16.166] [INFO] socket_log - >>a user connected
+[2019-01-19T11:46:16.166] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T11:47:12.245] [WARN] socket_log - >>a user disconnected
+[2019-01-19T11:47:12.245] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T11:47:13.954] [INFO] socket_log - >>a user connected
+[2019-01-19T11:47:13.954] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T11:49:28.207] [WARN] socket_log - >>a user disconnected
+[2019-01-19T11:49:28.207] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T11:49:29.898] [INFO] socket_log - >>a user connected
+[2019-01-19T11:49:29.898] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T11:49:59.917] [WARN] socket_log - >>a user disconnected
+[2019-01-19T11:49:59.917] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T11:50:01.367] [INFO] socket_log - >>a user connected
+[2019-01-19T11:50:01.368] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T11:52:15.218] [WARN] socket_log - >>a user disconnected
+[2019-01-19T11:52:15.218] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T11:52:17.158] [INFO] socket_log - >>a user connected
+[2019-01-19T11:52:17.159] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T11:52:47.168] [WARN] socket_log - >>a user disconnected
+[2019-01-19T11:52:47.168] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T11:52:48.047] [INFO] socket_log - >>a user connected
+[2019-01-19T11:52:48.047] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T11:53:18.057] [WARN] socket_log - >>a user disconnected
+[2019-01-19T11:53:18.057] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T11:53:20.025] [INFO] socket_log - >>a user connected
+[2019-01-19T11:53:20.026] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T11:53:50.038] [WARN] socket_log - >>a user disconnected
+[2019-01-19T11:53:50.038] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T11:53:51.221] [INFO] socket_log - >>a user connected
+[2019-01-19T11:53:51.221] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T11:54:21.229] [WARN] socket_log - >>a user disconnected
+[2019-01-19T11:54:21.229] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T11:54:22.111] [INFO] socket_log - >>a user connected
+[2019-01-19T11:54:22.111] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T11:55:18.278] [WARN] socket_log - >>a user disconnected
+[2019-01-19T11:55:18.278] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T11:55:20.159] [INFO] socket_log - >>a user connected
+[2019-01-19T11:55:20.159] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T11:56:42.204] [WARN] socket_log - >>a user disconnected
+[2019-01-19T11:56:42.204] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T11:56:44.171] [INFO] socket_log - >>a user connected
+[2019-01-19T11:56:44.171] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T11:57:14.184] [WARN] socket_log - >>a user disconnected
+[2019-01-19T11:57:14.185] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T11:57:15.958] [INFO] socket_log - >>a user connected
+[2019-01-19T11:57:15.958] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T11:57:45.967] [WARN] socket_log - >>a user disconnected
+[2019-01-19T11:57:45.967] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-01-19T11:57:48.113] [INFO] socket_log - >>a user connected
+[2019-01-19T11:57:48.113] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T12:09:38.678] [INFO] backend-http - ::1 - - "GET /static/js/8.90a9ace038e11cb41fd6.js HTTP/1.1" 200 2711 "http://localhost/user/profile" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:39.127] [INFO] database - SELECT * FROM classes WHERE type=1 LIMIT 0,20[FILLED.]
+[2019-01-19T12:09:39.130] [INFO] database - select cl.id, cl.title, liveplayer_vid as lvid, l.password as pw from classusers cu left join lives l on l.class = cu.class_id, classes cl where cu.user_id = 10 and cu.role = 0 and cl.id = cu.class_id[FILLED.]
+[2019-01-19T12:09:39.131] [INFO] backend-http - ::1 - - "POST /api/class/public/fetch HTTP/1.1" 200 3140 "http://localhost/course/enter" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:39.132] [INFO] backend-http - ::1 - - "POST /api/class/my_course/fetch HTTP/1.1" 200 966 "http://localhost/course/enter" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:40.458] [INFO] backend-http - ::1 - - "GET /static/js/19.ba4ea326257bdd9302df.js HTTP/1.1" 200 6024 "http://localhost/course/enter" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:40.459] [INFO] backend-http - ::1 - - "GET /static/js/10.e1ded25346e4ad141474.js HTTP/1.1" 200 3876 "http://localhost/course/enter" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:40.537] [INFO] database - SELECT * FROM classes WHERE id = '1'[FILLED.]
+[2019-01-19T12:09:40.538] [INFO] database - SELECT resource FROM resources WHERE `class_id` = '1'[FILLED.]
+[2019-01-19T12:09:40.539] [INFO] backend-http - ::1 - - "POST /api/class/resources/query HTTP/1.1" 200 234 "http://localhost/class/1/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:40.544] [INFO] class_log - [post status] { class_id: '1' }
+[2019-01-19T12:09:40.545] [INFO] database - SELECT resource from resources WHERE class_id = '1'[FILLED.]
+[2019-01-19T12:09:40.547] [INFO] backend-http - ::1 - - "POST /api/class/info/query HTTP/1.1" 200 575 "http://localhost/class/1/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:40.574] [INFO] database - SELECT * FROM classusers WHERE user_id = 10 AND class_id = '1'[FILLED.]
+[2019-01-19T12:09:40.576] [INFO] backend-http - ::1 - - "POST /api/class/status HTTP/1.1" 200 46 "http://localhost/class/1/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:40.593] [INFO] database - SELECT content FROM `contents` WHERE `code`='AWdPCzz4My6hyKFF'[FILLED.]
+[2019-01-19T12:09:40.595] [INFO] backend-http - ::1 - - "POST /api/content/fetch/html HTTP/1.1" 200 212 "http://localhost/class/1/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:40.597] [INFO] database - SELECT content FROM `contents` WHERE `code`='B7nkKPHwsDrEP55D'[FILLED.]
+[2019-01-19T12:09:40.598] [INFO] backend-http - ::1 - - "POST /api/content/fetch/html HTTP/1.1" 200 705 "http://localhost/class/1/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:43.113] [INFO] database - select cl.id, cl.title, liveplayer_vid as lvid, l.password as pw from classusers cu left join lives l on l.class = cu.class_id, classes cl where cu.user_id = 10 and cu.role = 0 and cl.id = cu.class_id[FILLED.]
+[2019-01-19T12:09:43.114] [INFO] database - SELECT * FROM classes WHERE type=1 LIMIT 0,20[FILLED.]
+[2019-01-19T12:09:43.115] [INFO] backend-http - ::1 - - "POST /api/class/my_course/fetch HTTP/1.1" 200 966 "http://localhost/course/enter" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:43.115] [INFO] backend-http - ::1 - - "POST /api/class/public/fetch HTTP/1.1" 200 3140 "http://localhost/course/enter" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:44.586] [INFO] database - SELECT * FROM classes WHERE id = '2'[FILLED.]
+[2019-01-19T12:09:44.587] [INFO] database - SELECT resource FROM resources WHERE `class_id` = '2'[FILLED.]
+[2019-01-19T12:09:44.587] [INFO] backend-http - ::1 - - "POST /api/class/resources/query HTTP/1.1" 200 234 "http://localhost/class/2/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:44.591] [INFO] database - SELECT resource from resources WHERE class_id = '2'[FILLED.]
+[2019-01-19T12:09:44.593] [INFO] backend-http - ::1 - - "POST /api/class/info/query HTTP/1.1" 200 568 "http://localhost/class/2/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:44.594] [INFO] class_log - [post status] { class_id: '2' }
+[2019-01-19T12:09:44.619] [INFO] database - SELECT * FROM classusers WHERE user_id = 10 AND class_id = '2'[FILLED.]
+[2019-01-19T12:09:44.620] [INFO] backend-http - ::1 - - "POST /api/class/status HTTP/1.1" 200 46 "http://localhost/class/2/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:44.638] [INFO] database - SELECT content FROM `contents` WHERE `code`='xZceCJjykfCEM7cF'[FILLED.]
+[2019-01-19T12:09:44.640] [INFO] backend-http - ::1 - - "POST /api/content/fetch/html HTTP/1.1" 200 99 "http://localhost/class/2/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:44.641] [INFO] database - SELECT content FROM `contents` WHERE `code`='NkjewzAxGf7ReEGS'[FILLED.]
+[2019-01-19T12:09:44.645] [INFO] backend-http - ::1 - - "POST /api/content/fetch/html HTTP/1.1" 200 2 "http://localhost/class/2/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:46.233] [INFO] database - SELECT * FROM classes WHERE type=1 LIMIT 0,20[FILLED.]
+[2019-01-19T12:09:46.235] [INFO] backend-http - ::1 - - "POST /api/class/public/fetch HTTP/1.1" 200 3140 "http://localhost/course/enter" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:46.235] [INFO] database - select cl.id, cl.title, liveplayer_vid as lvid, l.password as pw from classusers cu left join lives l on l.class = cu.class_id, classes cl where cu.user_id = 10 and cu.role = 0 and cl.id = cu.class_id[FILLED.]
+[2019-01-19T12:09:46.236] [INFO] backend-http - ::1 - - "POST /api/class/my_course/fetch HTTP/1.1" 200 966 "http://localhost/course/enter" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:47.525] [INFO] database - SELECT * FROM classes WHERE id = '5'[FILLED.]
+[2019-01-19T12:09:47.526] [INFO] database - SELECT resource FROM resources WHERE `class_id` = '5'[FILLED.]
+[2019-01-19T12:09:47.527] [INFO] backend-http - ::1 - - "POST /api/class/resources/query HTTP/1.1" 200 121 "http://localhost/class/5/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:47.532] [INFO] database - SELECT resource from resources WHERE class_id = '5'[FILLED.]
+[2019-01-19T12:09:47.533] [INFO] backend-http - ::1 - - "POST /api/class/info/query HTTP/1.1" 200 421 "http://localhost/class/5/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:47.535] [INFO] class_log - [post status] { class_id: '5' }
+[2019-01-19T12:09:47.562] [INFO] database - SELECT * FROM classusers WHERE user_id = 10 AND class_id = '5'[FILLED.]
+[2019-01-19T12:09:47.563] [INFO] backend-http - ::1 - - "POST /api/class/status HTTP/1.1" 200 46 "http://localhost/class/5/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:47.571] [INFO] database - SELECT content FROM `contents` WHERE `code`='Tx5kWNBYrcAXFNm8'[FILLED.]
+[2019-01-19T12:09:47.573] [INFO] backend-http - ::1 - - "POST /api/content/fetch/html HTTP/1.1" 200 2 "http://localhost/class/5/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:47.573] [INFO] database - SELECT content FROM `contents` WHERE `code`='B22EJhzJp3PT6GAZ'[FILLED.]
+[2019-01-19T12:09:47.574] [INFO] backend-http - ::1 - - "POST /api/content/fetch/html HTTP/1.1" 200 2 "http://localhost/class/5/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:48.660] [INFO] database - select cl.id, cl.title, liveplayer_vid as lvid, l.password as pw from classusers cu left join lives l on l.class = cu.class_id, classes cl where cu.user_id = 10 and cu.role = 0 and cl.id = cu.class_id[FILLED.]
+[2019-01-19T12:09:48.661] [INFO] database - SELECT * FROM classes WHERE type=1 LIMIT 0,20[FILLED.]
+[2019-01-19T12:09:48.662] [INFO] backend-http - ::1 - - "POST /api/class/my_course/fetch HTTP/1.1" 200 966 "http://localhost/course/enter" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:48.663] [INFO] backend-http - ::1 - - "POST /api/class/public/fetch HTTP/1.1" 200 3140 "http://localhost/course/enter" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.202] [INFO] database - SELECT * FROM classes WHERE id = '3'[FILLED.]
+[2019-01-19T12:09:50.270] [INFO] database - SELECT resource FROM resources WHERE `class_id` = '3'[FILLED.]
+[2019-01-19T12:09:50.271] [INFO] backend-http - ::1 - - "POST /api/class/resources/query HTTP/1.1" 200 234 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.272] [INFO] database - SELECT resource from resources WHERE class_id = '3'[FILLED.]
+[2019-01-19T12:09:50.273] [INFO] backend-http - ::1 - - "POST /api/class/info/query HTTP/1.1" 200 569 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.283] [INFO] class_log - [post status] { class_id: '3' }
+[2019-01-19T12:09:50.311] [INFO] database - SELECT * FROM classusers WHERE user_id = 10 AND class_id = '3'[FILLED.]
+[2019-01-19T12:09:50.313] [INFO] backend-http - ::1 - - "POST /api/class/status HTTP/1.1" 200 42 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.333] [INFO] database - SELECT content FROM `contents` WHERE `code`='fQzt3Q8YWJBQHbdh'[FILLED.]
+[2019-01-19T12:09:50.336] [INFO] database - SELECT content FROM `contents` WHERE `code`='6DrdGXicptYtiCGf'[FILLED.]
+[2019-01-19T12:09:50.341] [INFO] backend-http - ::1 - - "POST /api/content/fetch/html HTTP/1.1" 200 293 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.342] [INFO] backend-http - ::1 - - "POST /api/content/fetch/html HTTP/1.1" 200 236 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.359] [INFO] backend-http - ::1 - - "GET /static/js/23.91eceafbce30a7fe3c47.js HTTP/1.1" 200 7366 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.365] [INFO] backend-http - ::1 - - "GET /static/js/24.43e28059cebed81e7f5a.js HTTP/1.1" 200 3688 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.367] [INFO] backend-http - ::1 - - "GET /static/js/30.d508eb2db787711ed6e9.js HTTP/1.1" 200 1313 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.369] [INFO] backend-http - ::1 - - "GET /static/js/31.4fb2957d8d5b7011cc80.js HTTP/1.1" 200 3501 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.369] [INFO] backend-http - ::1 - - "GET /static/js/11.58663c5fbf1471c4cfde.js HTTP/1.1" 200 2498 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.373] [INFO] backend-http - ::1 - - "GET /static/js/2.1d62dd3f7cf449a43b20.js HTTP/1.1" 200 717101 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.380] [INFO] backend-http - ::1 - - "GET /static/js/22.55a9ce3d58ff6a1c76c1.js HTTP/1.1" 200 1215 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.382] [INFO] backend-http - ::1 - - "GET /static/js/16.96d6ca5eb383e0aa018e.js HTTP/1.1" 200 13883 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.465] [INFO] database - SELECT user_id, realname, date_time FROM blacklisting WHERE class_id = '3' ;[FILLED.]
+[2019-01-19T12:09:50.469] [INFO] backend-http - ::1 - - "POST /api/class/participants/show_blacklisting HTTP/1.1" 200 119 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.470] [INFO] database - SELECT users.id, users.realname, users.nickname, users.email, classusers.role FROM users LEFT JOIN classusers ON classusers.user_id = users.id WHERE classusers.class_id = '3' ORDER BY classusers.role DESC[FILLED.]
+[2019-01-19T12:09:50.474] [INFO] backend-http - ::1 - - "POST /api/class/participants/show HTTP/1.1" 200 430 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.566] [INFO] database - SELECT * FROM classes WHERE id = '3'[FILLED.]
+[2019-01-19T12:09:50.572] [INFO] database - SELECT resource from resources WHERE class_id = '3'[FILLED.]
+[2019-01-19T12:09:50.573] [INFO] backend-http - ::1 - - "POST /api/class/info/query HTTP/1.1" 200 569 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.591] [INFO] database - select * from coursefiles where class_id = 3[FILLED.]
+[2019-01-19T12:09:50.591] [INFO] file_log - { sql: 'select * from coursefiles where class_id = 3',
+  status: 'SUCCESS.',
+  results: 
+   [ RowDataPacket {
+       id: 27,
+       class_id: 3,
+       file_id: 20,
+       filename: '5a424f304bda79a490aa5c8a7abd742a软工展示 操作指南.pdf' },
+     RowDataPacket {
+       id: 30,
+       class_id: 3,
+       file_id: 22,
+       filename: 'c911eb0cd2f480854713fc20dc31b162file-stl.pdf' },
+     RowDataPacket {
+       id: 31,
+       class_id: 3,
+       file_id: 24,
+       filename: '4e06ffdf3cde50ecbf8ebed28c2f749dfile-data-structure.pdf' } ],
+  details: undefined }
+[2019-01-19T12:09:50.592] [INFO] backend-http - ::1 - - "POST /api/file/fetch_coursefiles HTTP/1.1" 200 590 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.603] [INFO] backend-http - ::1 - - "GET /api/user/session HTTP/1.1" 200 249 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.609] [INFO] database - select * from files where user_id = 10[FILLED.]
+[2019-01-19T12:09:50.609] [INFO] file_log - { sql: 'select * from files where user_id = 10',
+  status: 'SUCCESS.',
+  results: 
+   [ RowDataPacket {
+       id: 20,
+       user_id: 10,
+       filename: '5a424f304bda79a490aa5c8a7abd742a软工展示 操作指南.pdf',
+       type: null },
+     RowDataPacket {
+       id: 22,
+       user_id: 10,
+       filename: 'c911eb0cd2f480854713fc20dc31b162file-stl.pdf',
+       type: null },
+     RowDataPacket {
+       id: 24,
+       user_id: 10,
+       filename: '4e06ffdf3cde50ecbf8ebed28c2f749dfile-data-structure.pdf',
+       type: null },
+     RowDataPacket {
+       id: 25,
+       user_id: 10,
+       filename: 'a31c389eae3722b154be6c136881ff39计5年级%C2%A02017-2018%C2%A0学年个人荣誉公示.pdf',
+       type: null } ],
+  details: undefined }
+[2019-01-19T12:09:50.610] [INFO] backend-http - ::1 - - "POST /api/file/fetch HTTP/1.1" 200 779 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.649] [INFO] database - SELECT * FROM classusers WHERE user_id = 10 AND class_id = '3'[FILLED.]
+[2019-01-19T12:09:50.649] [INFO] log_file - ROLE =  0
+[2019-01-19T12:09:50.649] [INFO] log_file - TYPE =  student
+[2019-01-19T12:09:50.657] [INFO] database - SELECT * FROM `problems` WHERE class_id = '3' AND `state`>=1[FILLED.]
+[2019-01-19T12:09:50.658] [INFO] backend-http - ::1 - - "POST /api/problem/list HTTP/1.1" 200 359 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.665] [INFO] database - SELECT * FROM classusers WHERE user_id = 10 AND class_id = '3'[FILLED.]
+[2019-01-19T12:09:50.665] [INFO] log_file - ROLE =  0
+[2019-01-19T12:09:50.665] [INFO] log_file - TYPE =  teacher
+[2019-01-19T12:09:50.671] [INFO] database - SELECT * FROM `problems` WHERE class_id = '3'[FILLED.]
+[2019-01-19T12:09:50.672] [INFO] backend-http - ::1 - - "POST /api/problem/list HTTP/1.1" 200 344 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.702] [INFO] database - SELECT content FROM `contents` WHERE `code`='fQzt3Q8YWJBQHbdh'[FILLED.]
+[2019-01-19T12:09:50.703] [INFO] database - SELECT content FROM `contents` WHERE `code`='6DrdGXicptYtiCGf'[FILLED.]
+[2019-01-19T12:09:50.703] [INFO] backend-http - ::1 - - "POST /api/content/fetch/html HTTP/1.1" 200 293 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.704] [INFO] backend-http - ::1 - - "POST /api/content/fetch/html HTTP/1.1" 200 236 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.728] [INFO] database - SELECT * FROM classusers WHERE user_id = 10 AND class_id = 3[FILLED.]
+[2019-01-19T12:09:50.731] [INFO] database - select * from coursefiles where class_id = 3[FILLED.]
+[2019-01-19T12:09:50.731] [INFO] file_log - { sql: 'select * from coursefiles where class_id = 3',
+  status: 'SUCCESS.',
+  results: 
+   [ RowDataPacket {
+       id: 27,
+       class_id: 3,
+       file_id: 20,
+       filename: '5a424f304bda79a490aa5c8a7abd742a软工展示 操作指南.pdf' },
+     RowDataPacket {
+       id: 30,
+       class_id: 3,
+       file_id: 22,
+       filename: 'c911eb0cd2f480854713fc20dc31b162file-stl.pdf' },
+     RowDataPacket {
+       id: 31,
+       class_id: 3,
+       file_id: 24,
+       filename: '4e06ffdf3cde50ecbf8ebed28c2f749dfile-data-structure.pdf' } ],
+  details: undefined }
+[2019-01-19T12:09:50.732] [INFO] backend-http - ::1 - - "POST /api/file/fetch_coursefiles HTTP/1.1" 200 590 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.735] [INFO] database - SELECT users.realname, users.nickname, forums.userid, forums.message, forums.registration_date, forums.id FROM users LEFT JOIN forums ON users.id = forums.userid WHERE forums.classid = 3[FILLED.]
+[2019-01-19T12:09:50.736] [INFO] backend-http - ::1 - - "POST /api/chat/info/query HTTP/1.1" 200 165 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.748] [INFO] database - SELECT * FROM `program_problems` WHERE `code` = '7Z76J2G6N6QOX2BS'[FILLED.]
+[2019-01-19T12:09:50.750] [INFO] backend-http - ::1 - - "POST /api/problem/table/program_problems/get HTTP/1.1" 200 278 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.753] [INFO] database - SELECT * FROM `choice_problems` WHERE `code` = 'N0GZC68ZZNFGD07L'[FILLED.]
+[2019-01-19T12:09:50.756] [INFO] backend-http - ::1 - - "POST /api/problem/table/choice_problems/get HTTP/1.1" 200 316 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.789] [INFO] database - SELECT content FROM `contents` WHERE `code`='c_D2784DBHXJBSA9S1'[FILLED.]
+[2019-01-19T12:09:50.789] [INFO] backend-http - ::1 - - "POST /api/content/fetch/html HTTP/1.1" 200 2 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.790] [INFO] database - SELECT * FROM `program_problem_answers` WHERE `problem_code` = '7Z76J2G6N6QOX2BS' AND `user_id` = 10[FILLED.]
+[2019-01-19T12:09:50.795] [INFO] database - SELECT content FROM `contents` WHERE `code`='c_7DG8R61G236VQ3G9'[FILLED.]
+[2019-01-19T12:09:50.796] [INFO] database - SELECT * FROM `choice_problem_answers` WHERE `code` = 'N0GZC68ZZNFGD07L' AND `user_id` = 10[FILLED.]
+[2019-01-19T12:09:50.797] [INFO] backend-http - ::1 - - "POST /api/problem/program_problem/fetch HTTP/1.1" 200 83 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.797] [INFO] backend-http - ::1 - - "POST /api/content/fetch/html HTTP/1.1" 200 2 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.798] [INFO] backend-http - ::1 - - "POST /api/problem/choice_problem/fetch HTTP/1.1" 200 237 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.815] [INFO] backend-http - ::1 - - "GET /b47a11872c7377ec2f77.worker.js HTTP/1.1" 200 744673 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.865] [INFO] live - [get] chat record count
+ { course_id: '3' }
+[2019-01-19T12:09:50.883] [INFO] database - SELECT users.id, users.realname, users.nickname, users.email, classusers.role FROM users LEFT JOIN classusers ON classusers.user_id = users.id WHERE classusers.class_id = '3' ORDER BY classusers.role DESC[FILLED.]
+[2019-01-19T12:09:50.884] [INFO] backend-http - ::1 - - "POST /api/class/participants/show HTTP/1.1" 200 430 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.888] [INFO] database - SELECT user_id, realname, date_time FROM blacklisting WHERE class_id = '3' ;[FILLED.]
+[2019-01-19T12:09:50.890] [INFO] backend-http - ::1 - - "POST /api/class/participants/show_blacklisting HTTP/1.1" 200 119 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.903] [INFO] database - SELECT COUNT(*) FROM ac_database.chat_record WHERE course_id = '3';[FILLED.]
+[2019-01-19T12:09:50.903] [INFO] live - [get] chat record count, success. 4
+[2019-01-19T12:09:50.904] [INFO] backend-http - ::1 - - "GET /api/live/get_chat_record_count?course_id=3 HTTP/1.1" 200 33 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.934] [INFO] database - SELECT * FROM `class_caches` WHERE `class_id`=3 AND `entry`='FILE_NAME'[FILLED.]
+[2019-01-19T12:09:50.935] [INFO] backend-http - ::1 - - "POST /api/class/cache/get HTTP/1.1" 200 114 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.936] [INFO] database - SELECT * FROM `class_caches` WHERE `class_id`=3 AND `entry`='PROBLEM'[FILLED.]
+[2019-01-19T12:09:50.937] [INFO] backend-http - ::1 - - "POST /api/class/cache/get HTTP/1.1" 200 112 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.949] [INFO] database - SELECT * FROM lives WHERE class = '3'[FILLED.]
+[2019-01-19T12:09:50.950] [INFO] backend-http - ::1 - - "POST /api/class/liveid/query HTTP/1.1" 200 93 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:50.975] [INFO] live - [get] chat record
+ { course_id: '3', start: '0', end: '20' }
+[2019-01-19T12:09:51.002] [INFO] database - SELECT COUNT(*) FROM ac_database.chat_record WHERE course_id = '3';[FILLED.]
+[2019-01-19T12:09:51.009] [INFO] database - SELECT * FROM ac_database.chat_record WHERE course_id = '3' LIMIT 0, 4;[FILLED.]
+[2019-01-19T12:09:51.010] [INFO] live - [get] chat record, success.
+[2019-01-19T12:09:51.010] [INFO] backend-http - ::1 - - "GET /api/live/get_chat_record?course_id=3&start=0&end=20 HTTP/1.1" 200 781 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:51.050] [INFO] backend-http - ::1 - - "GET /chat/pictures/10_undefined_1543586338104 HTTP/1.1" 500 1329 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:51.051] [INFO] backend-http - ::1 - - "GET /chat/pictures/10_undefined_1543586321922 HTTP/1.1" 500 1329 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:57.840] [INFO] backend-http - ::ffff:127.0.0.1 - - "GET /class/3/materials HTTP/1.1" 200 1378 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:57.951] [INFO] backend-http - ::ffff:127.0.0.1 - - "GET /static/css/app.4002ce28fb808ec76bf7c17832cace31.css HTTP/1.1" 200 221496 "http://127.0.0.1/class/3/materials" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:57.954] [INFO] backend-http - ::ffff:127.0.0.1 - - "GET /static/js/manifest.d8b61fd31b4d0b27ebf2.js HTTP/1.1" 200 6810 "http://127.0.0.1/class/3/materials" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:57.955] [INFO] backend-http - ::ffff:127.0.0.1 - - "GET /static/liveplayer.js HTTP/1.1" 200 262025 "http://127.0.0.1/class/3/materials" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:57.956] [INFO] backend-http - ::ffff:127.0.0.1 - - "GET /static/js/app.090f29dee06032e62b10.js HTTP/1.1" 200 30795 "http://127.0.0.1/class/3/materials" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:09:57.984] [INFO] backend-http - ::ffff:127.0.0.1 - - "GET /static/js/vendor.52b07ff70b5d5dc44899.js HTTP/1.1" 200 1164651 "http://127.0.0.1/class/3/materials" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:10:00.143] [INFO] socket_log - >>a user connected
+[2019-01-19T12:10:00.156] [INFO] backend-http - ::ffff:127.0.0.1 - - "GET /static/js/30.d508eb2db787711ed6e9.js HTTP/1.1" 200 1313 "http://127.0.0.1/class/3/materials" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:10:00.157] [INFO] backend-http - ::ffff:127.0.0.1 - - "GET /static/js/19.ba4ea326257bdd9302df.js HTTP/1.1" 200 6024 "http://127.0.0.1/class/3/materials" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:10:00.161] [INFO] backend-http - ::ffff:127.0.0.1 - - "GET /api/user/session HTTP/1.1" 200 96 "http://127.0.0.1/class/3/materials" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:10:00.179] [INFO] backend-http - ::ffff:127.0.0.1 - - "GET /static/img/logo.10cbfa8.png HTTP/1.1" 200 10658 "http://127.0.0.1/class/3/materials" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:10:00.347] [INFO] backend-http - ::ffff:127.0.0.1 - - "GET /static/js/10.e1ded25346e4ad141474.js HTTP/1.1" 200 3876 "http://127.0.0.1/class/3/materials" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:10:00.350] [INFO] backend-http - ::ffff:127.0.0.1 - - "GET /static/js/0.a430ddf57803e2873642.js HTTP/1.1" 200 493613 "http://127.0.0.1/class/3/materials" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:10:00.398] [INFO] database - SELECT resource FROM resources WHERE `class_id` = '3'[FILLED.]
+[2019-01-19T12:10:00.400] [INFO] backend-http - ::ffff:127.0.0.1 - - "POST /api/class/resources/query HTTP/1.1" 200 234 "http://127.0.0.1/class/3/materials" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:10:00.417] [INFO] class_log - [post status] { class_id: '3' }
+[2019-01-19T12:10:00.418] [INFO] backend-http - ::ffff:127.0.0.1 - - "POST /api/class/status HTTP/1.1" 200 43 "http://127.0.0.1/class/3/materials" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:10:00.467] [INFO] backend-http - ::ffff:127.0.0.1 - - "GET /static/js/21.2479d152935f9ab5e18f.js HTTP/1.1" 200 2474 "http://127.0.0.1/class/3/materials" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:10:00.468] [INFO] backend-http - ::ffff:127.0.0.1 - - "GET /static/js/12.e7f68204b4566e4dbbe0.js HTTP/1.1" 200 782 "http://127.0.0.1/class/3/materials" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:10:00.535] [INFO] backend-http - ::ffff:127.0.0.1 - - "GET /favicon.ico HTTP/1.1" 200 10658 "http://127.0.0.1/user/sign_in" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:10:02.691] [WARN] socket_log - >>a user disconnected
+[2019-01-19T12:10:09.411] [INFO] database - select * from files where user_id = 10[FILLED.]
+[2019-01-19T12:10:09.412] [INFO] file_log - { sql: 'select * from files where user_id = 10',
+  status: 'SUCCESS.',
+  results: 
+   [ RowDataPacket {
+       id: 20,
+       user_id: 10,
+       filename: '5a424f304bda79a490aa5c8a7abd742a软工展示 操作指南.pdf',
+       type: null },
+     RowDataPacket {
+       id: 22,
+       user_id: 10,
+       filename: 'c911eb0cd2f480854713fc20dc31b162file-stl.pdf',
+       type: null },
+     RowDataPacket {
+       id: 24,
+       user_id: 10,
+       filename: '4e06ffdf3cde50ecbf8ebed28c2f749dfile-data-structure.pdf',
+       type: null },
+     RowDataPacket {
+       id: 25,
+       user_id: 10,
+       filename: 'a31c389eae3722b154be6c136881ff39计5年级%C2%A02017-2018%C2%A0学年个人荣誉公示.pdf',
+       type: null } ],
+  details: undefined }
+[2019-01-19T12:10:09.413] [INFO] backend-http - ::1 - - "POST /api/file/fetch HTTP/1.1" 200 779 "http://localhost/class/3/file_settings" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:10:09.443] [INFO] database - select * from coursefiles where class_id = 3[FILLED.]
+[2019-01-19T12:10:09.444] [INFO] file_log - { sql: 'select * from coursefiles where class_id = 3',
+  status: 'SUCCESS.',
+  results: 
+   [ RowDataPacket {
+       id: 27,
+       class_id: 3,
+       file_id: 20,
+       filename: '5a424f304bda79a490aa5c8a7abd742a软工展示 操作指南.pdf' },
+     RowDataPacket {
+       id: 30,
+       class_id: 3,
+       file_id: 22,
+       filename: 'c911eb0cd2f480854713fc20dc31b162file-stl.pdf' },
+     RowDataPacket {
+       id: 31,
+       class_id: 3,
+       file_id: 24,
+       filename: '4e06ffdf3cde50ecbf8ebed28c2f749dfile-data-structure.pdf' } ],
+  details: undefined }
+[2019-01-19T12:10:09.445] [INFO] backend-http - ::1 - - "POST /api/file/fetch_coursefiles HTTP/1.1" 200 590 "http://localhost/class/3/file_settings" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:10:10.893] [INFO] database - select * from files where user_id = 10[FILLED.]
+[2019-01-19T12:10:10.893] [INFO] file_log - { sql: 'select * from files where user_id = 10',
+  status: 'SUCCESS.',
+  results: 
+   [ RowDataPacket {
+       id: 20,
+       user_id: 10,
+       filename: '5a424f304bda79a490aa5c8a7abd742a软工展示 操作指南.pdf',
+       type: null },
+     RowDataPacket {
+       id: 22,
+       user_id: 10,
+       filename: 'c911eb0cd2f480854713fc20dc31b162file-stl.pdf',
+       type: null },
+     RowDataPacket {
+       id: 24,
+       user_id: 10,
+       filename: '4e06ffdf3cde50ecbf8ebed28c2f749dfile-data-structure.pdf',
+       type: null },
+     RowDataPacket {
+       id: 25,
+       user_id: 10,
+       filename: 'a31c389eae3722b154be6c136881ff39计5年级%C2%A02017-2018%C2%A0学年个人荣誉公示.pdf',
+       type: null } ],
+  details: undefined }
+[2019-01-19T12:10:10.895] [INFO] backend-http - ::1 - - "POST /api/file/fetch HTTP/1.1" 200 779 "http://localhost/class/3/file_settings" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T12:10:10.926] [INFO] database - select * from coursefiles where class_id = 3[FILLED.]
+[2019-01-19T12:10:10.926] [INFO] file_log - { sql: 'select * from coursefiles where class_id = 3',
+  status: 'SUCCESS.',
+  results: 
+   [ RowDataPacket {
+       id: 27,
+       class_id: 3,
+       file_id: 20,
+       filename: '5a424f304bda79a490aa5c8a7abd742a软工展示 操作指南.pdf' },
+     RowDataPacket {
+       id: 30,
+       class_id: 3,
+       file_id: 22,
+       filename: 'c911eb0cd2f480854713fc20dc31b162file-stl.pdf' },
+     RowDataPacket {
+       id: 31,
+       class_id: 3,
+       file_id: 24,
+       filename: '4e06ffdf3cde50ecbf8ebed28c2f749dfile-data-structure.pdf' } ],
+  details: undefined }
+[2019-01-19T12:10:10.927] [INFO] backend-http - ::1 - - "POST /api/file/fetch_coursefiles HTTP/1.1" 200 590 "http://localhost/class/3/file_settings" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+[2019-01-19T14:19:21.561] [WARN] socket_log - >>a user disconnected
+[2019-01-19T14:37:44.229] [WARN] database - use_database ==> USE ac_database
+[2019-01-19T14:37:44.236] [WARN] database - create_user_table ==> CREATE TABLE IF NOT EXISTS `users`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `email` CHAR(30),`nickname` VARCHAR(40), `realname` VARCHAR(40), `role` INT UNSIGNED NOT NULL, `motto` VARCHAR(200), `registration_date` TIMESTAMP, `password` CHAR(40) NOT NULL, `phone` CHAR(11) NOT NULL, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T14:37:44.241] [WARN] database - create_class_table ==> CREATE TABLE IF NOT EXISTS `classes`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `imagepath` VARCHAR(500), `description` VARCHAR(500), `notice` VARCHAR(500), `title` VARCHAR(80) NOT NULL, `type` INT UNSIGNED, `registration_date` TIMESTAMP, `invitation_code` CHAR(40), PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T14:37:44.247] [WARN] database - create_class_user_table ==> CREATE TABLE IF NOT EXISTS `classusers`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `class_id` VARCHAR(40) NOT NULL, `role` INT UNSIGNED NOT NULL, `user_id` INT UNSIGNED NOT NULL,`registration_date` TIMESTAMP, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T14:37:44.254] [WARN] database - create_class_resources ==> CREATE TABLE IF NOT EXISTS `resources`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `class_id` INT UNSIGNED NOT NULL, `resource` CHAR(20), PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T14:37:44.259] [WARN] database - create_forums ==> CREATE TABLE IF NOT EXISTS `forums`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `userid` INT UNSIGNED NOT NULL, `classid` INT UNSIGNED NOT NULL, `message` VARCHAR(200), `registration_date` TIMESTAMP, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T14:37:44.264] [WARN] database - create_file_table ==> CREATE TABLE IF NOT EXISTS `files`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `user_id` INT UNSIGNED NOT NULL, `filename` VARCHAR(100), `type` CHAR(20), PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T14:37:44.269] [WARN] database - create_banned_list ==> CREATE TABLE IF NOT EXISTS `bannedlist`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `userid` INT UNSIGNED NOT NULL, `classid` INT UNSIGNED NOT NULL, `status` INT UNSIGNED NOT NULL, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T14:37:44.274] [WARN] database - create_content_table ==> CREATE TABLE IF NOT EXISTS `contents` (`code` CHAR(25) NOT NULL, `content` VARCHAR(10000) NOT NULL, `deltas` VARCHAR(10000) NOT NULL, PRIMARY KEY (`code`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T14:37:44.278] [WARN] database - create_problem_table ==> CREATE TABLE IF NOT EXISTS `problems` (`code` CHAR(20) NOT NULL, `title` VARCHAR(100) NOT NULL, `class_id` INT UNSIGNED NOT NULL, `type` INT UNSIGNED NOT NULL, `creater` INT UNSIGNED NOT NULL, `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, `state` INT UNSIGNED NOT NULL, PRIMARY KEY (`code`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T14:37:44.284] [WARN] database - create_choice_problem_table ==> CREATE TABLE IF NOT EXISTS `choice_problems` (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `code` CHAR(20) NOT NULL, `description` char(25) NOT NULL, `choice_count` INT NOT NULL DEFAULT 4, `choice_A` VARCHAR(400), `choice_B` VARCHAR(400), `choice_C` VARCHAR(400), `choice_D` VARCHAR(400), `choice_E` VARCHAR(400), `answer` CHAR(2), `solution` CHAR(25) NOT NULL, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T14:37:44.289] [WARN] database - create_choice_problem_answer_table ==> CREATE TABLE IF NOT EXISTS `choice_problem_answers` (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `user_id` INT UNSIGNED NOT NULL, `code` CHAR(20), `answer` CHAR(2), `time` TIMESTAMP, `type` INT UNSIGNED, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T14:37:44.294] [WARN] database - create_program_problem_table ==> CREATE TABLE IF NOT EXISTS `program_problems` (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `code` CHAR(20) NOT NULL, `language` CHAR(20) NULL, `description` CHAR(20) NOT NULL, `answer_program_id` CHAR(20) NOT NULL, `solution` CHAR(20) NOT NULL, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T14:37:44.299] [WARN] database - create_program_problem_answer_table ==> CREATE TABLE IF NOT EXISTS `program_problem_answers` (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `code` CHAR(20) NOT NULL, `problem_code` CHAR(20) NOT NULL, `user_id` INT UNSIGNED NOT NULL, `type` INT UNSIGNED, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T14:37:44.304] [WARN] database - create_class_file_table ==> CREATE TABLE IF NOT EXISTS `coursefiles`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `class_id` INT UNSIGNED NOT NULL, `file_id` INT UNSIGNED NOT NULL, `filename` VARCHAR(100) NOT NULL, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T14:37:44.309] [WARN] database - create_posts ==> CREATE TABLE IF NOT EXISTS `posts`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `userid` INT UNSIGNED NOT NULL, `forumid` INT UNSIGNED NOT NULL, `message` VARCHAR(200), `registration_date` TIMESTAMP, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T14:37:44.314] [WARN] database - create_lives ==> CREATE TABLE IF NOT EXISTS `lives`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `class` INT UNSIGNED NOT NULL, `liveplayer_uid` VARCHAR(50), `liveplayer_vid` VARCHAR(50), `password` VARCHAR(50), PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T14:37:44.319] [WARN] database - create_chat_record ==> CREATE TABLE IF NOT EXISTS `chat_record` (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `date_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, `course_id` VARCHAR(40) NOT NULL, `user_id` INT NOT NULL, `course_status` INT NOT NULL, `realname` VARCHAR(40), `type` VARCHAR(40) NOT NULL, `message` VARCHAR(200) NOT NULL, `path` VARCHAR(100), PRIMARY KEY (`id`) ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
+[2019-01-19T14:37:44.324] [WARN] database - create_class_cache_table ==> CREATE TABLE IF NOT EXISTS `class_caches` (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `class_id` INT UNSIGNED NOT NULL, `entry` CHAR(30) NOT NULL, `data` VARCHAR(1000), `create_time` TIMESTAMP NULL, `drop_time` TIMESTAMP NULL, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-01-19T14:37:44.328] [WARN] database - create_blacklisting ==> CREATE TABLE IF NOT EXISTS `blacklisting` (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `date_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, `class_id` INT NOT NULL, `user_id` INT NOT NULL, `realname` VARCHAR(40), PRIMARY KEY (`id`) ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
+[2019-01-19T14:37:44.333] [INFO] backend-http - Database Reinstalled!
+[2019-01-19T14:37:52.435] [INFO] backend-http - ::1 - - "GET / HTTP/1.1" 200 1378 "" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:37:52.445] [INFO] backend-http - ::1 - - "GET /static/liveplayer.js HTTP/1.1" 200 262025 "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:37:52.452] [INFO] backend-http - ::1 - - "GET /static/js/manifest.d8b61fd31b4d0b27ebf2.js HTTP/1.1" 200 6810 "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:37:52.453] [INFO] backend-http - ::1 - - "GET /static/css/app.4002ce28fb808ec76bf7c17832cace31.css HTTP/1.1" 200 221496 "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:37:52.453] [INFO] backend-http - ::1 - - "GET /static/js/app.090f29dee06032e62b10.js HTTP/1.1" 200 30795 "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:37:52.458] [INFO] backend-http - ::1 - - "GET /static/js/vendor.52b07ff70b5d5dc44899.js HTTP/1.1" 200 1164651 "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:37:53.673] [INFO] socket_log - >>a user connected
+[2019-01-19T14:37:53.684] [INFO] backend-http - ::1 - - "GET /api/user/session HTTP/1.1" 200 96 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:37:53.688] [INFO] backend-http - ::1 - - "GET /static/img/logo.10cbfa8.png HTTP/1.1" 200 10658 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:37:53.758] [INFO] database - SELECT * FROM classes WHERE type=1 LIMIT 0,20[FILLED.]
+[2019-01-19T14:37:53.760] [INFO] backend-http - ::1 - - "POST /api/class/public/fetch HTTP/1.1" 200 3140 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:37:54.118] [INFO] backend-http - ::1 - - "GET /images/1_1545325828944_english-learning-img.png HTTP/1.1" 500 1329 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:37:54.157] [INFO] backend-http - ::1 - - "GET /images/2_1545325802767_music-theory-img.jpg HTTP/1.1" 500 1329 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:37:54.157] [INFO] backend-http - ::1 - - "GET /images/3_1545325751016_C++-course-img.jpg HTTP/1.1" 500 1329 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:37:54.157] [INFO] backend-http - ::1 - - "GET /images/9_1543645658904_2-3.png HTTP/1.1" 500 1329 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:37:54.170] [INFO] backend-http - ::1 - - "GET /images/10_1543657718379_image.png HTTP/1.1" 500 1329 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:37:54.178] [INFO] backend-http - ::1 - - "GET /images/11_1545368937071_233.jpg HTTP/1.1" 500 1329 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:37:54.188] [INFO] backend-http - ::1 - - "GET /favicon.ico HTTP/1.1" 200 10658 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:37:58.160] [INFO] backend-http - ::1 - - "GET /static/js/8.90a9ace038e11cb41fd6.js HTTP/1.1" 200 2711 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:37:58.232] [INFO] backend-http - ::1 - - "POST /api/class/my_course/fetch HTTP/1.1" 403 15 "http://localhost/course/enter" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:37:58.253] [INFO] database - SELECT * FROM classes WHERE type=1 LIMIT 0,20[FILLED.]
+[2019-01-19T14:37:58.255] [INFO] backend-http - ::1 - - "POST /api/class/public/fetch HTTP/1.1" 200 3140 "http://localhost/course/enter" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:00.487] [INFO] backend-http - ::1 - - "GET /static/js/12.e7f68204b4566e4dbbe0.js HTTP/1.1" 200 782 "http://localhost/course/enter" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:00.488] [INFO] backend-http - ::1 - - "GET /static/js/21.2479d152935f9ab5e18f.js HTTP/1.1" 200 2474 "http://localhost/course/enter" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:06.449] [INFO] database - SELECT * FROM users WHERE nickname = 'teacher'[FILLED.]
+[2019-01-19T14:38:06.451] [INFO] backend-http - ::1 - - "POST /api/user/login HTTP/1.1" 200 284 "http://localhost/user/sign_in" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:08.049] [INFO] backend-http - ::1 - - "GET / HTTP/1.1" 304 - "http://localhost/user/sign_in" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:08.053] [WARN] socket_log - >>a user disconnected
+[2019-01-19T14:38:08.072] [INFO] backend-http - ::1 - - "GET /static/js/manifest.d8b61fd31b4d0b27ebf2.js HTTP/1.1" 304 - "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:08.075] [INFO] backend-http - ::1 - - "GET /static/js/vendor.52b07ff70b5d5dc44899.js HTTP/1.1" 304 - "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:08.078] [INFO] backend-http - ::1 - - "GET /static/js/app.090f29dee06032e62b10.js HTTP/1.1" 304 - "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:08.079] [INFO] backend-http - ::1 - - "GET /static/css/app.4002ce28fb808ec76bf7c17832cace31.css HTTP/1.1" 304 - "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:08.079] [INFO] backend-http - ::1 - - "GET /static/liveplayer.js HTTP/1.1" 304 - "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:08.156] [INFO] socket_log - >>a user connected
+[2019-01-19T14:38:08.157] [INFO] socket_log - >>saved! user_socket counts:  1 
+current users:
+ [ '10' ]
+[2019-01-19T14:38:08.163] [INFO] backend-http - ::1 - - "GET /api/user/session HTTP/1.1" 200 231 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:08.167] [INFO] backend-http - ::1 - - "GET /static/img/logo.10cbfa8.png HTTP/1.1" 304 - "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:08.207] [INFO] database - SELECT * FROM classes WHERE type=1 LIMIT 0,20[FILLED.]
+[2019-01-19T14:38:08.209] [INFO] backend-http - ::1 - - "POST /api/class/public/fetch HTTP/1.1" 200 3140 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:08.250] [INFO] backend-http - ::1 - - "GET /images/1_1545325828944_english-learning-img.png HTTP/1.1" 500 1329 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:08.272] [INFO] backend-http - ::1 - - "GET /images/2_1545325802767_music-theory-img.jpg HTTP/1.1" 500 1329 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:08.286] [INFO] backend-http - ::1 - - "GET /images/3_1545325751016_C++-course-img.jpg HTTP/1.1" 500 1329 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:08.297] [INFO] backend-http - ::1 - - "GET /images/11_1545368937071_233.jpg HTTP/1.1" 500 1329 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:08.325] [INFO] backend-http - ::1 - - "GET /images/9_1543645658904_2-3.png HTTP/1.1" 500 1329 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:08.326] [INFO] backend-http - ::1 - - "GET /images/10_1543657718379_image.png HTTP/1.1" 500 1329 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:10.237] [INFO] backend-http - ::1 - - "GET /static/js/8.90a9ace038e11cb41fd6.js HTTP/1.1" 304 - "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:10.296] [INFO] database - SELECT * FROM classes WHERE type=1 LIMIT 0,20[FILLED.]
+[2019-01-19T14:38:10.297] [INFO] database - select cl.id, cl.title, liveplayer_vid as lvid, l.password as pw from classusers cu left join lives l on l.class = cu.class_id, classes cl where cu.user_id = 10 and cu.role = 0 and cl.id = cu.class_id[FILLED.]
+[2019-01-19T14:38:10.298] [INFO] backend-http - ::1 - - "POST /api/class/public/fetch HTTP/1.1" 200 3140 "http://localhost/course/enter" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:10.298] [INFO] backend-http - ::1 - - "POST /api/class/my_course/fetch HTTP/1.1" 200 966 "http://localhost/course/enter" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:11.736] [INFO] backend-http - ::1 - - "GET /static/js/10.e1ded25346e4ad141474.js HTTP/1.1" 200 3876 "http://localhost/course/enter" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:11.737] [INFO] backend-http - ::1 - - "GET /static/js/19.ba4ea326257bdd9302df.js HTTP/1.1" 200 6024 "http://localhost/course/enter" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:11.740] [INFO] backend-http - ::1 - - "GET /static/js/0.a430ddf57803e2873642.js HTTP/1.1" 200 493613 "http://localhost/course/enter" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:11.803] [INFO] database - SELECT * FROM classes WHERE id = '3'[FILLED.]
+[2019-01-19T14:38:11.807] [INFO] database - SELECT resource FROM resources WHERE `class_id` = '3'[FILLED.]
+[2019-01-19T14:38:11.808] [INFO] backend-http - ::1 - - "POST /api/class/resources/query HTTP/1.1" 200 234 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:11.809] [INFO] database - SELECT resource from resources WHERE class_id = '3'[FILLED.]
+[2019-01-19T14:38:11.810] [INFO] backend-http - ::1 - - "POST /api/class/info/query HTTP/1.1" 200 569 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:11.813] [INFO] class_log - [post status] { class_id: '3' }
+[2019-01-19T14:38:11.836] [INFO] database - SELECT * FROM classusers WHERE user_id = 10 AND class_id = '3'[FILLED.]
+[2019-01-19T14:38:11.837] [INFO] backend-http - ::1 - - "POST /api/class/status HTTP/1.1" 200 42 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:11.842] [INFO] backend-http - ::1 - - "GET /static/js/23.91eceafbce30a7fe3c47.js HTTP/1.1" 200 7366 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:11.854] [INFO] backend-http - ::1 - - "GET /static/js/24.43e28059cebed81e7f5a.js HTTP/1.1" 200 3688 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:11.855] [INFO] backend-http - ::1 - - "GET /static/js/30.d508eb2db787711ed6e9.js HTTP/1.1" 200 1313 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:11.857] [INFO] backend-http - ::1 - - "GET /static/js/31.4fb2957d8d5b7011cc80.js HTTP/1.1" 200 3501 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:11.859] [INFO] database - SELECT content FROM `contents` WHERE `code`='fQzt3Q8YWJBQHbdh'[FILLED.]
+[2019-01-19T14:38:11.860] [INFO] database - SELECT content FROM `contents` WHERE `code`='6DrdGXicptYtiCGf'[FILLED.]
+[2019-01-19T14:38:11.862] [INFO] backend-http - ::1 - - "POST /api/content/fetch/html HTTP/1.1" 200 293 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:11.863] [INFO] backend-http - ::1 - - "POST /api/content/fetch/html HTTP/1.1" 200 236 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:11.868] [INFO] backend-http - ::1 - - "GET /static/js/11.58663c5fbf1471c4cfde.js HTTP/1.1" 200 2498 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:11.868] [INFO] backend-http - ::1 - - "GET /static/js/22.55a9ce3d58ff6a1c76c1.js HTTP/1.1" 200 1215 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:11.869] [INFO] backend-http - ::1 - - "GET /static/js/16.96d6ca5eb383e0aa018e.js HTTP/1.1" 200 13883 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:11.871] [INFO] backend-http - ::1 - - "GET /static/js/2.1d62dd3f7cf449a43b20.js HTTP/1.1" 200 717101 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:11.907] [INFO] database - SELECT user_id, realname, date_time FROM blacklisting WHERE class_id = '3' ;[FILLED.]
+[2019-01-19T14:38:11.908] [INFO] backend-http - ::1 - - "POST /api/class/participants/show_blacklisting HTTP/1.1" 200 119 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:11.908] [INFO] database - SELECT users.id, users.realname, users.nickname, users.email, classusers.role FROM users LEFT JOIN classusers ON classusers.user_id = users.id WHERE classusers.class_id = '3' ORDER BY classusers.role DESC[FILLED.]
+[2019-01-19T14:38:11.909] [INFO] backend-http - ::1 - - "POST /api/class/participants/show HTTP/1.1" 200 430 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:11.967] [INFO] database - SELECT * FROM classes WHERE id = '3'[FILLED.]
+[2019-01-19T14:38:11.972] [INFO] database - SELECT resource from resources WHERE class_id = '3'[FILLED.]
+[2019-01-19T14:38:11.973] [INFO] backend-http - ::1 - - "POST /api/class/info/query HTTP/1.1" 200 569 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:11.990] [INFO] database - select * from coursefiles where class_id = 3[FILLED.]
+[2019-01-19T14:38:11.990] [INFO] file_log - { sql: 'select * from coursefiles where class_id = 3',
+  status: 'SUCCESS.',
+  results: 
+   [ RowDataPacket {
+       id: 27,
+       class_id: 3,
+       file_id: 20,
+       filename: '5a424f304bda79a490aa5c8a7abd742a软工展示 操作指南.pdf' },
+     RowDataPacket {
+       id: 30,
+       class_id: 3,
+       file_id: 22,
+       filename: 'c911eb0cd2f480854713fc20dc31b162file-stl.pdf' },
+     RowDataPacket {
+       id: 31,
+       class_id: 3,
+       file_id: 24,
+       filename: '4e06ffdf3cde50ecbf8ebed28c2f749dfile-data-structure.pdf' } ],
+  details: undefined }
+[2019-01-19T14:38:11.992] [INFO] backend-http - ::1 - - "POST /api/file/fetch_coursefiles HTTP/1.1" 200 590 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:11.999] [INFO] database - select * from files where user_id = 10[FILLED.]
+[2019-01-19T14:38:12.000] [INFO] file_log - { sql: 'select * from files where user_id = 10',
+  status: 'SUCCESS.',
+  results: 
+   [ RowDataPacket {
+       id: 20,
+       user_id: 10,
+       filename: '5a424f304bda79a490aa5c8a7abd742a软工展示 操作指南.pdf',
+       type: null },
+     RowDataPacket {
+       id: 22,
+       user_id: 10,
+       filename: 'c911eb0cd2f480854713fc20dc31b162file-stl.pdf',
+       type: null },
+     RowDataPacket {
+       id: 24,
+       user_id: 10,
+       filename: '4e06ffdf3cde50ecbf8ebed28c2f749dfile-data-structure.pdf',
+       type: null },
+     RowDataPacket {
+       id: 25,
+       user_id: 10,
+       filename: 'a31c389eae3722b154be6c136881ff39计5年级%C2%A02017-2018%C2%A0学年个人荣誉公示.pdf',
+       type: null } ],
+  details: undefined }
+[2019-01-19T14:38:12.002] [INFO] backend-http - ::1 - - "POST /api/file/fetch HTTP/1.1" 200 779 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:12.040] [INFO] database - SELECT content FROM `contents` WHERE `code`='6DrdGXicptYtiCGf'[FILLED.]
+[2019-01-19T14:38:12.041] [INFO] backend-http - ::1 - - "POST /api/content/fetch/html HTTP/1.1" 200 236 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:12.042] [INFO] database - SELECT content FROM `contents` WHERE `code`='fQzt3Q8YWJBQHbdh'[FILLED.]
+[2019-01-19T14:38:12.043] [INFO] backend-http - ::1 - - "POST /api/content/fetch/html HTTP/1.1" 200 293 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:12.081] [INFO] backend-http - ::1 - - "GET /api/user/session HTTP/1.1" 200 249 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:12.125] [INFO] database - SELECT * FROM classusers WHERE user_id = 10 AND class_id = '3'[FILLED.]
+[2019-01-19T14:38:12.125] [INFO] log_file - ROLE =  0
+[2019-01-19T14:38:12.125] [INFO] log_file - TYPE =  student
+[2019-01-19T14:38:12.131] [INFO] database - SELECT * FROM `problems` WHERE class_id = '3' AND `state`>=1[FILLED.]
+[2019-01-19T14:38:12.132] [INFO] backend-http - ::1 - - "POST /api/problem/list HTTP/1.1" 200 359 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:12.143] [INFO] database - SELECT * FROM classusers WHERE user_id = 10 AND class_id = '3'[FILLED.]
+[2019-01-19T14:38:12.144] [INFO] log_file - ROLE =  0
+[2019-01-19T14:38:12.144] [INFO] log_file - TYPE =  teacher
+[2019-01-19T14:38:12.149] [INFO] database - SELECT * FROM `problems` WHERE class_id = '3'[FILLED.]
+[2019-01-19T14:38:12.150] [INFO] backend-http - ::1 - - "POST /api/problem/list HTTP/1.1" 200 344 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:12.176] [INFO] backend-http - ::1 - - "GET /b47a11872c7377ec2f77.worker.js HTTP/1.1" 200 744673 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:12.208] [INFO] live - [get] chat record count
+ { course_id: '3' }
+[2019-01-19T14:38:12.229] [INFO] database - SELECT users.id, users.realname, users.nickname, users.email, classusers.role FROM users LEFT JOIN classusers ON classusers.user_id = users.id WHERE classusers.class_id = '3' ORDER BY classusers.role DESC[FILLED.]
+[2019-01-19T14:38:12.232] [INFO] backend-http - ::1 - - "POST /api/class/participants/show HTTP/1.1" 200 430 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:12.232] [INFO] database - SELECT user_id, realname, date_time FROM blacklisting WHERE class_id = '3' ;[FILLED.]
+[2019-01-19T14:38:12.233] [INFO] database - SELECT COUNT(*) FROM ac_database.chat_record WHERE course_id = '3';[FILLED.]
+[2019-01-19T14:38:12.234] [INFO] live - [get] chat record count, success. 4
+[2019-01-19T14:38:12.235] [INFO] backend-http - ::1 - - "POST /api/class/participants/show_blacklisting HTTP/1.1" 200 119 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:12.236] [INFO] backend-http - ::1 - - "GET /api/live/get_chat_record_count?course_id=3 HTTP/1.1" 200 33 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:12.282] [INFO] database - SELECT * FROM `class_caches` WHERE `class_id`=3 AND `entry`='FILE_NAME'[FILLED.]
+[2019-01-19T14:38:12.283] [INFO] backend-http - ::1 - - "POST /api/class/cache/get HTTP/1.1" 200 114 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:12.284] [INFO] database - SELECT * FROM `class_caches` WHERE `class_id`=3 AND `entry`='PROBLEM'[FILLED.]
+[2019-01-19T14:38:12.285] [INFO] backend-http - ::1 - - "POST /api/class/cache/get HTTP/1.1" 200 112 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:12.291] [INFO] database - SELECT * FROM lives WHERE class = '3'[FILLED.]
+[2019-01-19T14:38:12.292] [INFO] backend-http - ::1 - - "POST /api/class/liveid/query HTTP/1.1" 200 93 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:12.300] [INFO] database - select * from coursefiles where class_id = 3[FILLED.]
+[2019-01-19T14:38:12.300] [INFO] file_log - { sql: 'select * from coursefiles where class_id = 3',
+  status: 'SUCCESS.',
+  results: 
+   [ RowDataPacket {
+       id: 27,
+       class_id: 3,
+       file_id: 20,
+       filename: '5a424f304bda79a490aa5c8a7abd742a软工展示 操作指南.pdf' },
+     RowDataPacket {
+       id: 30,
+       class_id: 3,
+       file_id: 22,
+       filename: 'c911eb0cd2f480854713fc20dc31b162file-stl.pdf' },
+     RowDataPacket {
+       id: 31,
+       class_id: 3,
+       file_id: 24,
+       filename: '4e06ffdf3cde50ecbf8ebed28c2f749dfile-data-structure.pdf' } ],
+  details: undefined }
+[2019-01-19T14:38:12.301] [INFO] backend-http - ::1 - - "POST /api/file/fetch_coursefiles HTTP/1.1" 200 590 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:12.303] [INFO] database - SELECT * FROM classusers WHERE user_id = 10 AND class_id = 3[FILLED.]
+[2019-01-19T14:38:12.309] [INFO] database - SELECT users.realname, users.nickname, forums.userid, forums.message, forums.registration_date, forums.id FROM users LEFT JOIN forums ON users.id = forums.userid WHERE forums.classid = 3[FILLED.]
+[2019-01-19T14:38:12.310] [INFO] backend-http - ::1 - - "POST /api/chat/info/query HTTP/1.1" 200 165 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:12.317] [INFO] database - SELECT * FROM `choice_problems` WHERE `code` = 'N0GZC68ZZNFGD07L'[FILLED.]
+[2019-01-19T14:38:12.319] [INFO] backend-http - ::1 - - "POST /api/problem/table/choice_problems/get HTTP/1.1" 200 316 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:12.319] [INFO] database - SELECT * FROM `program_problems` WHERE `code` = '7Z76J2G6N6QOX2BS'[FILLED.]
+[2019-01-19T14:38:12.321] [INFO] backend-http - ::1 - - "POST /api/problem/table/program_problems/get HTTP/1.1" 200 278 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:12.337] [INFO] live - [get] chat record
+ { course_id: '3', start: '0', end: '20' }
+[2019-01-19T14:38:12.360] [INFO] database - SELECT COUNT(*) FROM ac_database.chat_record WHERE course_id = '3';[FILLED.]
+[2019-01-19T14:38:12.366] [INFO] database - SELECT * FROM ac_database.chat_record WHERE course_id = '3' LIMIT 0, 4;[FILLED.]
+[2019-01-19T14:38:12.367] [INFO] live - [get] chat record, success.
+[2019-01-19T14:38:12.368] [INFO] backend-http - ::1 - - "GET /api/live/get_chat_record?course_id=3&start=0&end=20 HTTP/1.1" 200 781 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:12.813] [INFO] backend-http - ::1 - - "GET /chat/pictures/10_undefined_1543586338104 HTTP/1.1" 500 1329 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:12.822] [INFO] backend-http - ::1 - - "GET /chat/pictures/10_undefined_1543586321922 HTTP/1.1" 500 1329 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:12.828] [INFO] database - SELECT * FROM `choice_problem_answers` WHERE `code` = 'N0GZC68ZZNFGD07L' AND `user_id` = 10[FILLED.]
+[2019-01-19T14:38:12.829] [INFO] backend-http - ::1 - - "POST /api/problem/choice_problem/fetch HTTP/1.1" 200 237 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:12.830] [INFO] database - SELECT * FROM `program_problem_answers` WHERE `problem_code` = '7Z76J2G6N6QOX2BS' AND `user_id` = 10[FILLED.]
+[2019-01-19T14:38:12.831] [INFO] database - SELECT content FROM `contents` WHERE `code`='c_D2784DBHXJBSA9S1'[FILLED.]
+[2019-01-19T14:38:12.833] [INFO] database - SELECT content FROM `contents` WHERE `code`='c_7DG8R61G236VQ3G9'[FILLED.]
+[2019-01-19T14:38:12.834] [INFO] backend-http - ::1 - - "POST /api/content/fetch/html HTTP/1.1" 200 2 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:12.835] [INFO] backend-http - ::1 - - "POST /api/content/fetch/html HTTP/1.1" 200 2 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:12.836] [INFO] backend-http - ::1 - - "POST /api/problem/program_problem/fetch HTTP/1.1" 200 83 "http://localhost/class/3/details" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:25.431] [INFO] database - select * from files where user_id = 10[FILLED.]
+[2019-01-19T14:38:25.431] [INFO] file_log - { sql: 'select * from files where user_id = 10',
+  status: 'SUCCESS.',
+  results: 
+   [ RowDataPacket {
+       id: 20,
+       user_id: 10,
+       filename: '5a424f304bda79a490aa5c8a7abd742a软工展示 操作指南.pdf',
+       type: null },
+     RowDataPacket {
+       id: 22,
+       user_id: 10,
+       filename: 'c911eb0cd2f480854713fc20dc31b162file-stl.pdf',
+       type: null },
+     RowDataPacket {
+       id: 24,
+       user_id: 10,
+       filename: '4e06ffdf3cde50ecbf8ebed28c2f749dfile-data-structure.pdf',
+       type: null },
+     RowDataPacket {
+       id: 25,
+       user_id: 10,
+       filename: 'a31c389eae3722b154be6c136881ff39计5年级%C2%A02017-2018%C2%A0学年个人荣誉公示.pdf',
+       type: null } ],
+  details: undefined }
+[2019-01-19T14:38:25.432] [INFO] backend-http - ::1 - - "POST /api/file/fetch HTTP/1.1" 200 779 "http://localhost/class/3/file_settings" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:25.462] [INFO] database - select * from coursefiles where class_id = 3[FILLED.]
+[2019-01-19T14:38:25.462] [INFO] file_log - { sql: 'select * from coursefiles where class_id = 3',
+  status: 'SUCCESS.',
+  results: 
+   [ RowDataPacket {
+       id: 27,
+       class_id: 3,
+       file_id: 20,
+       filename: '5a424f304bda79a490aa5c8a7abd742a软工展示 操作指南.pdf' },
+     RowDataPacket {
+       id: 30,
+       class_id: 3,
+       file_id: 22,
+       filename: 'c911eb0cd2f480854713fc20dc31b162file-stl.pdf' },
+     RowDataPacket {
+       id: 31,
+       class_id: 3,
+       file_id: 24,
+       filename: '4e06ffdf3cde50ecbf8ebed28c2f749dfile-data-structure.pdf' } ],
+  details: undefined }
+[2019-01-19T14:38:25.463] [INFO] backend-http - ::1 - - "POST /api/file/fetch_coursefiles HTTP/1.1" 200 590 "http://localhost/class/3/file_settings" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:26.770] [INFO] database - select * from files where user_id = 10[FILLED.]
+[2019-01-19T14:38:26.770] [INFO] file_log - { sql: 'select * from files where user_id = 10',
+  status: 'SUCCESS.',
+  results: 
+   [ RowDataPacket {
+       id: 20,
+       user_id: 10,
+       filename: '5a424f304bda79a490aa5c8a7abd742a软工展示 操作指南.pdf',
+       type: null },
+     RowDataPacket {
+       id: 22,
+       user_id: 10,
+       filename: 'c911eb0cd2f480854713fc20dc31b162file-stl.pdf',
+       type: null },
+     RowDataPacket {
+       id: 24,
+       user_id: 10,
+       filename: '4e06ffdf3cde50ecbf8ebed28c2f749dfile-data-structure.pdf',
+       type: null },
+     RowDataPacket {
+       id: 25,
+       user_id: 10,
+       filename: 'a31c389eae3722b154be6c136881ff39计5年级%C2%A02017-2018%C2%A0学年个人荣誉公示.pdf',
+       type: null } ],
+  details: undefined }
+[2019-01-19T14:38:26.771] [INFO] backend-http - ::1 - - "POST /api/file/fetch HTTP/1.1" 200 779 "http://localhost/class/3/file_settings" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:27.005] [INFO] database - select * from coursefiles where class_id = 3[FILLED.]
+[2019-01-19T14:38:27.005] [INFO] file_log - { sql: 'select * from coursefiles where class_id = 3',
+  status: 'SUCCESS.',
+  results: 
+   [ RowDataPacket {
+       id: 27,
+       class_id: 3,
+       file_id: 20,
+       filename: '5a424f304bda79a490aa5c8a7abd742a软工展示 操作指南.pdf' },
+     RowDataPacket {
+       id: 30,
+       class_id: 3,
+       file_id: 22,
+       filename: 'c911eb0cd2f480854713fc20dc31b162file-stl.pdf' },
+     RowDataPacket {
+       id: 31,
+       class_id: 3,
+       file_id: 24,
+       filename: '4e06ffdf3cde50ecbf8ebed28c2f749dfile-data-structure.pdf' } ],
+  details: undefined }
+[2019-01-19T14:38:27.006] [INFO] backend-http - ::1 - - "POST /api/file/fetch_coursefiles HTTP/1.1" 200 590 "http://localhost/class/3/file_settings" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:27.294] [INFO] database - select * from files where user_id = 10[FILLED.]
+[2019-01-19T14:38:27.295] [INFO] file_log - { sql: 'select * from files where user_id = 10',
+  status: 'SUCCESS.',
+  results: 
+   [ RowDataPacket {
+       id: 20,
+       user_id: 10,
+       filename: '5a424f304bda79a490aa5c8a7abd742a软工展示 操作指南.pdf',
+       type: null },
+     RowDataPacket {
+       id: 22,
+       user_id: 10,
+       filename: 'c911eb0cd2f480854713fc20dc31b162file-stl.pdf',
+       type: null },
+     RowDataPacket {
+       id: 24,
+       user_id: 10,
+       filename: '4e06ffdf3cde50ecbf8ebed28c2f749dfile-data-structure.pdf',
+       type: null },
+     RowDataPacket {
+       id: 25,
+       user_id: 10,
+       filename: 'a31c389eae3722b154be6c136881ff39计5年级%C2%A02017-2018%C2%A0学年个人荣誉公示.pdf',
+       type: null } ],
+  details: undefined }
+[2019-01-19T14:38:27.295] [INFO] backend-http - ::1 - - "POST /api/file/fetch HTTP/1.1" 200 779 "http://localhost/class/3/file_settings" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:27.370] [INFO] database - select * from coursefiles where class_id = 3[FILLED.]
+[2019-01-19T14:38:27.371] [INFO] file_log - { sql: 'select * from coursefiles where class_id = 3',
+  status: 'SUCCESS.',
+  results: 
+   [ RowDataPacket {
+       id: 27,
+       class_id: 3,
+       file_id: 20,
+       filename: '5a424f304bda79a490aa5c8a7abd742a软工展示 操作指南.pdf' },
+     RowDataPacket {
+       id: 30,
+       class_id: 3,
+       file_id: 22,
+       filename: 'c911eb0cd2f480854713fc20dc31b162file-stl.pdf' },
+     RowDataPacket {
+       id: 31,
+       class_id: 3,
+       file_id: 24,
+       filename: '4e06ffdf3cde50ecbf8ebed28c2f749dfile-data-structure.pdf' } ],
+  details: undefined }
+[2019-01-19T14:38:27.372] [INFO] backend-http - ::1 - - "POST /api/file/fetch_coursefiles HTTP/1.1" 200 590 "http://localhost/class/3/file_settings" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:27.904] [INFO] database - select * from files where user_id = 10[FILLED.]
+[2019-01-19T14:38:27.905] [INFO] file_log - { sql: 'select * from files where user_id = 10',
+  status: 'SUCCESS.',
+  results: 
+   [ RowDataPacket {
+       id: 20,
+       user_id: 10,
+       filename: '5a424f304bda79a490aa5c8a7abd742a软工展示 操作指南.pdf',
+       type: null },
+     RowDataPacket {
+       id: 22,
+       user_id: 10,
+       filename: 'c911eb0cd2f480854713fc20dc31b162file-stl.pdf',
+       type: null },
+     RowDataPacket {
+       id: 24,
+       user_id: 10,
+       filename: '4e06ffdf3cde50ecbf8ebed28c2f749dfile-data-structure.pdf',
+       type: null },
+     RowDataPacket {
+       id: 25,
+       user_id: 10,
+       filename: 'a31c389eae3722b154be6c136881ff39计5年级%C2%A02017-2018%C2%A0学年个人荣誉公示.pdf',
+       type: null } ],
+  details: undefined }
+[2019-01-19T14:38:27.906] [INFO] backend-http - ::1 - - "POST /api/file/fetch HTTP/1.1" 200 779 "http://localhost/class/3/file_settings" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T14:38:28.066] [INFO] database - select * from coursefiles where class_id = 3[FILLED.]
+[2019-01-19T14:38:28.066] [INFO] file_log - { sql: 'select * from coursefiles where class_id = 3',
+  status: 'SUCCESS.',
+  results: 
+   [ RowDataPacket {
+       id: 27,
+       class_id: 3,
+       file_id: 20,
+       filename: '5a424f304bda79a490aa5c8a7abd742a软工展示 操作指南.pdf' },
+     RowDataPacket {
+       id: 30,
+       class_id: 3,
+       file_id: 22,
+       filename: 'c911eb0cd2f480854713fc20dc31b162file-stl.pdf' },
+     RowDataPacket {
+       id: 31,
+       class_id: 3,
+       file_id: 24,
+       filename: '4e06ffdf3cde50ecbf8ebed28c2f749dfile-data-structure.pdf' } ],
+  details: undefined }
+[2019-01-19T14:38:28.067] [INFO] backend-http - ::1 - - "POST /api/file/fetch_coursefiles HTTP/1.1" 200 590 "http://localhost/class/3/file_settings" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T17:11:11.837] [INFO] database - select * from files where user_id = 10[FILLED.]
+[2019-01-19T17:11:11.837] [INFO] file_log - { sql: 'select * from files where user_id = 10',
+  status: 'SUCCESS.',
+  results: 
+   [ RowDataPacket {
+       id: 20,
+       user_id: 10,
+       filename: '5a424f304bda79a490aa5c8a7abd742a软工展示 操作指南.pdf',
+       type: null },
+     RowDataPacket {
+       id: 22,
+       user_id: 10,
+       filename: 'c911eb0cd2f480854713fc20dc31b162file-stl.pdf',
+       type: null },
+     RowDataPacket {
+       id: 24,
+       user_id: 10,
+       filename: '4e06ffdf3cde50ecbf8ebed28c2f749dfile-data-structure.pdf',
+       type: null },
+     RowDataPacket {
+       id: 25,
+       user_id: 10,
+       filename: 'a31c389eae3722b154be6c136881ff39计5年级%C2%A02017-2018%C2%A0学年个人荣誉公示.pdf',
+       type: null } ],
+  details: undefined }
+[2019-01-19T17:11:11.839] [INFO] backend-http - ::1 - - "POST /api/file/fetch HTTP/1.1" 200 779 "http://localhost/class/3/file_settings" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T17:11:11.867] [INFO] database - select * from coursefiles where class_id = 3[FILLED.]
+[2019-01-19T17:11:11.867] [INFO] file_log - { sql: 'select * from coursefiles where class_id = 3',
+  status: 'SUCCESS.',
+  results: 
+   [ RowDataPacket {
+       id: 27,
+       class_id: 3,
+       file_id: 20,
+       filename: '5a424f304bda79a490aa5c8a7abd742a软工展示 操作指南.pdf' },
+     RowDataPacket {
+       id: 30,
+       class_id: 3,
+       file_id: 22,
+       filename: 'c911eb0cd2f480854713fc20dc31b162file-stl.pdf' },
+     RowDataPacket {
+       id: 31,
+       class_id: 3,
+       file_id: 24,
+       filename: '4e06ffdf3cde50ecbf8ebed28c2f749dfile-data-structure.pdf' } ],
+  details: undefined }
+[2019-01-19T17:11:11.868] [INFO] backend-http - ::1 - - "POST /api/file/fetch_coursefiles HTTP/1.1" 200 590 "http://localhost/class/3/file_settings" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.2 Safari/605.1.15"
+[2019-01-19T18:50:49.037] [WARN] socket_log - >>a user disconnected
+[2019-01-19T18:50:49.038] [WARN] socket_log - >>deleted! user_socket counts:  0 
+current users:
+ []
+[2019-05-20T22:00:23.916] [WARN] database - use_database ==> USE ac_database
+[2019-05-20T22:00:24.042] [WARN] database - create_user_table ==> CREATE TABLE IF NOT EXISTS `users`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `email` CHAR(30),`nickname` VARCHAR(40), `realname` VARCHAR(40), `role` INT UNSIGNED NOT NULL, `motto` VARCHAR(200), `registration_date` TIMESTAMP, `password` CHAR(40) NOT NULL, `phone` CHAR(11) NOT NULL, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-20T22:00:24.294] [WARN] database - create_class_table ==> CREATE TABLE IF NOT EXISTS `classes`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `imagepath` VARCHAR(500), `description` VARCHAR(500), `notice` VARCHAR(500), `title` VARCHAR(80) NOT NULL, `type` INT UNSIGNED, `registration_date` TIMESTAMP, `invitation_code` CHAR(40), PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-20T22:00:24.380] [WARN] database - create_class_user_table ==> CREATE TABLE IF NOT EXISTS `classusers`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `class_id` VARCHAR(40) NOT NULL, `role` INT UNSIGNED NOT NULL, `user_id` INT UNSIGNED NOT NULL,`registration_date` TIMESTAMP, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-20T22:00:24.427] [WARN] database - create_class_resources ==> CREATE TABLE IF NOT EXISTS `resources`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `class_id` INT UNSIGNED NOT NULL, `resource` CHAR(20), PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-20T22:00:24.478] [WARN] database - create_forums ==> CREATE TABLE IF NOT EXISTS `forums`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `userid` INT UNSIGNED NOT NULL, `classid` INT UNSIGNED NOT NULL, `message` VARCHAR(200), `registration_date` TIMESTAMP, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-20T22:00:24.516] [WARN] database - create_file_table ==> CREATE TABLE IF NOT EXISTS `files`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `user_id` INT UNSIGNED NOT NULL, `filename` VARCHAR(100), `type` CHAR(20), PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-20T22:00:24.557] [WARN] database - create_banned_list ==> CREATE TABLE IF NOT EXISTS `bannedlist`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `userid` INT UNSIGNED NOT NULL, `classid` INT UNSIGNED NOT NULL, `status` INT UNSIGNED NOT NULL, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-20T22:00:24.596] [WARN] database - create_content_table ==> CREATE TABLE IF NOT EXISTS `contents` (`code` CHAR(25) NOT NULL, `content` VARCHAR(10000) NOT NULL, `deltas` VARCHAR(10000) NOT NULL, PRIMARY KEY (`code`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-20T22:00:24.688] [WARN] database - create_problem_table ==> CREATE TABLE IF NOT EXISTS `problems` (`code` CHAR(20) NOT NULL, `title` VARCHAR(100) NOT NULL, `class_id` INT UNSIGNED NOT NULL, `type` INT UNSIGNED NOT NULL, `creater` INT UNSIGNED NOT NULL, `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, `state` INT UNSIGNED NOT NULL, PRIMARY KEY (`code`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-20T22:00:24.759] [WARN] database - create_choice_problem_table ==> CREATE TABLE IF NOT EXISTS `choice_problems` (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `code` CHAR(20) NOT NULL, `description` char(25) NOT NULL, `choice_count` INT NOT NULL DEFAULT 4, `choice_A` VARCHAR(400), `choice_B` VARCHAR(400), `choice_C` VARCHAR(400), `choice_D` VARCHAR(400), `choice_E` VARCHAR(400), `answer` CHAR(2), `solution` CHAR(25) NOT NULL, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-20T22:00:24.819] [WARN] database - create_choice_problem_answer_table ==> CREATE TABLE IF NOT EXISTS `choice_problem_answers` (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `user_id` INT UNSIGNED NOT NULL, `code` CHAR(20), `answer` CHAR(2), `time` TIMESTAMP, `type` INT UNSIGNED, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-20T22:00:24.875] [WARN] database - create_program_problem_table ==> CREATE TABLE IF NOT EXISTS `program_problems` (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `code` CHAR(20) NOT NULL, `language` CHAR(20) NULL, `description` CHAR(20) NOT NULL, `answer_program_id` CHAR(20) NOT NULL, `solution` CHAR(20) NOT NULL, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-20T22:00:24.913] [WARN] database - create_program_problem_answer_table ==> CREATE TABLE IF NOT EXISTS `program_problem_answers` (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `code` CHAR(20) NOT NULL, `problem_code` CHAR(20) NOT NULL, `user_id` INT UNSIGNED NOT NULL, `type` INT UNSIGNED, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-20T22:00:24.954] [WARN] database - create_class_file_table ==> CREATE TABLE IF NOT EXISTS `coursefiles`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `class_id` INT UNSIGNED NOT NULL, `file_id` INT UNSIGNED NOT NULL, `filename` VARCHAR(100) NOT NULL, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-20T22:00:25.007] [WARN] database - create_posts ==> CREATE TABLE IF NOT EXISTS `posts`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `userid` INT UNSIGNED NOT NULL, `forumid` INT UNSIGNED NOT NULL, `message` VARCHAR(200), `registration_date` TIMESTAMP, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-20T22:00:25.047] [WARN] database - create_lives ==> CREATE TABLE IF NOT EXISTS `lives`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `class` INT UNSIGNED NOT NULL, `liveplayer_uid` VARCHAR(50), `liveplayer_vid` VARCHAR(50), `password` VARCHAR(50), PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-20T22:00:25.085] [WARN] database - create_chat_record ==> CREATE TABLE IF NOT EXISTS `chat_record` (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `date_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, `course_id` VARCHAR(40) NOT NULL, `user_id` INT NOT NULL, `course_status` INT NOT NULL, `realname` VARCHAR(40), `type` VARCHAR(40) NOT NULL, `message` VARCHAR(200) NOT NULL, `path` VARCHAR(100), PRIMARY KEY (`id`) ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
+[2019-05-20T22:00:25.133] [WARN] database - create_class_cache_table ==> CREATE TABLE IF NOT EXISTS `class_caches` (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `class_id` INT UNSIGNED NOT NULL, `entry` CHAR(30) NOT NULL, `data` VARCHAR(1000), `create_time` TIMESTAMP NULL, `drop_time` TIMESTAMP NULL, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-20T22:00:25.187] [WARN] database - create_blacklisting ==> CREATE TABLE IF NOT EXISTS `blacklisting` (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `date_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, `class_id` INT NOT NULL, `user_id` INT NOT NULL, `realname` VARCHAR(40), PRIMARY KEY (`id`) ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
+[2019-05-20T22:00:25.227] [INFO] backend-http - Database Reinstalled!
+[2019-05-20T22:01:04.718] [INFO] backend-http - ::1 - - "GET / HTTP/1.1" 200 1378 "" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-20T22:01:04.794] [INFO] backend-http - ::1 - - "GET /static/css/app.4002ce28fb808ec76bf7c17832cace31.css HTTP/1.1" 200 221496 "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-20T22:01:04.795] [INFO] backend-http - ::1 - - "GET /static/liveplayer.js HTTP/1.1" 200 262025 "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-20T22:01:04.796] [INFO] backend-http - ::1 - - "GET /static/js/app.090f29dee06032e62b10.js HTTP/1.1" 200 30795 "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-20T22:01:04.797] [INFO] backend-http - ::1 - - "GET /static/js/manifest.d8b61fd31b4d0b27ebf2.js HTTP/1.1" 200 6810 "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-20T22:01:04.824] [INFO] backend-http - ::1 - - "GET /static/js/vendor.52b07ff70b5d5dc44899.js HTTP/1.1" 200 1164651 "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-20T22:01:06.682] [INFO] socket_log - >>a user connected
+[2019-05-20T22:01:06.694] [INFO] backend-http - ::1 - - "GET /api/user/session HTTP/1.1" 200 96 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-20T22:01:06.734] [INFO] backend-http - ::1 - - "GET /static/img/logo.10cbfa8.png HTTP/1.1" 200 10658 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-20T22:01:06.803] [INFO] backend-http - ::1 - - "GET /favicon.ico HTTP/1.1" 200 10658 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-20T22:01:06.863] [INFO] database - SELECT * FROM classes WHERE type=1 LIMIT 0,20[FILLED.]
+[2019-05-20T22:01:06.864] [INFO] backend-http - ::1 - - "POST /api/class/public/fetch HTTP/1.1" 200 3140 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-20T22:01:07.235] [INFO] backend-http - ::1 - - "GET /images/1_1545325828944_english-learning-img.png HTTP/1.1" 500 1699 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-20T22:01:07.248] [INFO] backend-http - ::1 - - "GET /images/2_1545325802767_music-theory-img.jpg HTTP/1.1" 500 1699 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-20T22:01:07.270] [INFO] backend-http - ::1 - - "GET /images/3_1545325751016_C++-course-img.jpg HTTP/1.1" 500 1699 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-20T22:01:07.271] [INFO] backend-http - ::1 - - "GET /images/9_1543645658904_2-3.png HTTP/1.1" 500 1699 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-20T22:01:07.289] [INFO] backend-http - ::1 - - "GET /images/11_1545368937071_233.jpg HTTP/1.1" 500 1699 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-20T22:01:07.289] [INFO] backend-http - ::1 - - "GET /images/10_1543657718379_image.png HTTP/1.1" 500 1699 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-20T22:01:14.816] [WARN] socket_log - >>a user disconnected
+[2019-05-23T00:24:45.836] [WARN] database - use_database ==> USE ac_database
+[2019-05-23T00:24:45.904] [WARN] database - create_user_table ==> CREATE TABLE IF NOT EXISTS `users`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `email` CHAR(30),`nickname` VARCHAR(40), `realname` VARCHAR(40), `role` INT UNSIGNED NOT NULL, `motto` VARCHAR(200), `registration_date` TIMESTAMP, `password` CHAR(40) NOT NULL, `phone` CHAR(11) NOT NULL, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-23T00:24:46.113] [WARN] database - create_class_table ==> CREATE TABLE IF NOT EXISTS `classes`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `imagepath` VARCHAR(500), `description` VARCHAR(500), `notice` VARCHAR(500), `title` VARCHAR(80) NOT NULL, `type` INT UNSIGNED, `registration_date` TIMESTAMP, `invitation_code` CHAR(40), PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-23T00:24:46.149] [WARN] database - create_class_user_table ==> CREATE TABLE IF NOT EXISTS `classusers`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `class_id` VARCHAR(40) NOT NULL, `role` INT UNSIGNED NOT NULL, `user_id` INT UNSIGNED NOT NULL,`registration_date` TIMESTAMP, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-23T00:24:46.185] [WARN] database - create_class_resources ==> CREATE TABLE IF NOT EXISTS `resources`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `class_id` INT UNSIGNED NOT NULL, `resource` CHAR(20), PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-23T00:24:46.221] [WARN] database - create_forums ==> CREATE TABLE IF NOT EXISTS `forums`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `userid` INT UNSIGNED NOT NULL, `classid` INT UNSIGNED NOT NULL, `message` VARCHAR(200), `registration_date` TIMESTAMP, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-23T00:24:46.258] [WARN] database - create_file_table ==> CREATE TABLE IF NOT EXISTS `files`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `user_id` INT UNSIGNED NOT NULL, `filename` VARCHAR(100), `type` CHAR(20), PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-23T00:24:46.295] [WARN] database - create_banned_list ==> CREATE TABLE IF NOT EXISTS `bannedlist`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `userid` INT UNSIGNED NOT NULL, `classid` INT UNSIGNED NOT NULL, `status` INT UNSIGNED NOT NULL, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-23T00:24:46.332] [WARN] database - create_content_table ==> CREATE TABLE IF NOT EXISTS `contents` (`code` CHAR(25) NOT NULL, `content` VARCHAR(10000) NOT NULL, `deltas` VARCHAR(10000) NOT NULL, PRIMARY KEY (`code`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-23T00:24:46.368] [WARN] database - create_problem_table ==> CREATE TABLE IF NOT EXISTS `problems` (`code` CHAR(20) NOT NULL, `title` VARCHAR(100) NOT NULL, `class_id` INT UNSIGNED NOT NULL, `type` INT UNSIGNED NOT NULL, `creater` INT UNSIGNED NOT NULL, `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, `state` INT UNSIGNED NOT NULL, PRIMARY KEY (`code`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-23T00:24:46.417] [WARN] database - create_choice_problem_table ==> CREATE TABLE IF NOT EXISTS `choice_problems` (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `code` CHAR(20) NOT NULL, `description` char(25) NOT NULL, `choice_count` INT NOT NULL DEFAULT 4, `choice_A` VARCHAR(400), `choice_B` VARCHAR(400), `choice_C` VARCHAR(400), `choice_D` VARCHAR(400), `choice_E` VARCHAR(400), `answer` CHAR(2), `solution` CHAR(25) NOT NULL, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-23T00:24:46.453] [WARN] database - create_choice_problem_answer_table ==> CREATE TABLE IF NOT EXISTS `choice_problem_answers` (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `user_id` INT UNSIGNED NOT NULL, `code` CHAR(20), `answer` CHAR(2), `time` TIMESTAMP, `type` INT UNSIGNED, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-23T00:24:46.489] [WARN] database - create_program_problem_table ==> CREATE TABLE IF NOT EXISTS `program_problems` (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `code` CHAR(20) NOT NULL, `language` CHAR(20) NULL, `description` CHAR(20) NOT NULL, `answer_program_id` CHAR(20) NOT NULL, `solution` CHAR(20) NOT NULL, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-23T00:24:46.525] [WARN] database - create_program_problem_answer_table ==> CREATE TABLE IF NOT EXISTS `program_problem_answers` (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `code` CHAR(20) NOT NULL, `problem_code` CHAR(20) NOT NULL, `user_id` INT UNSIGNED NOT NULL, `type` INT UNSIGNED, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-23T00:24:46.561] [WARN] database - create_class_file_table ==> CREATE TABLE IF NOT EXISTS `coursefiles`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `class_id` INT UNSIGNED NOT NULL, `file_id` INT UNSIGNED NOT NULL, `filename` VARCHAR(100) NOT NULL, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-23T00:24:46.598] [WARN] database - create_posts ==> CREATE TABLE IF NOT EXISTS `posts`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `userid` INT UNSIGNED NOT NULL, `forumid` INT UNSIGNED NOT NULL, `message` VARCHAR(200), `registration_date` TIMESTAMP, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-23T00:24:46.635] [WARN] database - create_lives ==> CREATE TABLE IF NOT EXISTS `lives`(`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `class` INT UNSIGNED NOT NULL, `liveplayer_uid` VARCHAR(50), `liveplayer_vid` VARCHAR(50), `password` VARCHAR(50), PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-23T00:24:46.671] [WARN] database - create_chat_record ==> CREATE TABLE IF NOT EXISTS `chat_record` (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `date_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, `course_id` VARCHAR(40) NOT NULL, `user_id` INT NOT NULL, `course_status` INT NOT NULL, `realname` VARCHAR(40), `type` VARCHAR(40) NOT NULL, `message` VARCHAR(200) NOT NULL, `path` VARCHAR(100), PRIMARY KEY (`id`) ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
+[2019-05-23T00:24:46.707] [WARN] database - create_class_cache_table ==> CREATE TABLE IF NOT EXISTS `class_caches` (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `class_id` INT UNSIGNED NOT NULL, `entry` CHAR(30) NOT NULL, `data` VARCHAR(1000), `create_time` TIMESTAMP NULL, `drop_time` TIMESTAMP NULL, PRIMARY KEY (`id`) )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+[2019-05-23T00:24:46.743] [WARN] database - create_blacklisting ==> CREATE TABLE IF NOT EXISTS `blacklisting` (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `date_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, `class_id` INT NOT NULL, `user_id` INT NOT NULL, `realname` VARCHAR(40), PRIMARY KEY (`id`) ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
+[2019-05-23T00:24:46.780] [INFO] backend-http - Database Reinstalled!
+[2019-05-23T00:24:54.592] [INFO] backend-http - ::1 - - "GET / HTTP/1.1" 200 1378 "" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:24:54.683] [INFO] backend-http - ::1 - - "GET /static/css/app.4002ce28fb808ec76bf7c17832cace31.css HTTP/1.1" 200 221496 "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:24:54.688] [INFO] backend-http - ::1 - - "GET /static/js/app.090f29dee06032e62b10.js HTTP/1.1" 200 30795 "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:24:54.697] [INFO] backend-http - ::1 - - "GET /static/js/manifest.d8b61fd31b4d0b27ebf2.js HTTP/1.1" 200 6810 "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:24:54.704] [INFO] backend-http - ::1 - - "GET /static/liveplayer.js HTTP/1.1" 200 262025 "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:24:54.711] [INFO] backend-http - ::1 - - "GET /static/js/vendor.52b07ff70b5d5dc44899.js HTTP/1.1" 200 1164651 "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:24:57.062] [INFO] socket_log - >>a user connected
+[2019-05-23T00:24:57.148] [INFO] backend-http - ::1 - - "GET /api/user/session HTTP/1.1" 200 96 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:24:57.209] [INFO] backend-http - ::1 - - "GET /static/img/logo.10cbfa8.png HTTP/1.1" 200 10658 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:24:57.339] [INFO] database - SELECT * FROM classes WHERE type=1 LIMIT 0,20[FILLED.]
+[2019-05-23T00:24:57.340] [INFO] backend-http - ::1 - - "POST /api/class/public/fetch HTTP/1.1" 200 3140 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:24:57.688] [INFO] backend-http - ::1 - - "GET /images/1_1545325828944_english-learning-img.png HTTP/1.1" 500 1569 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:24:57.717] [INFO] backend-http - ::1 - - "GET /images/2_1545325802767_music-theory-img.jpg HTTP/1.1" 500 1569 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:24:57.717] [INFO] backend-http - ::1 - - "GET /images/3_1545325751016_C++-course-img.jpg HTTP/1.1" 500 1569 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:24:57.731] [INFO] backend-http - ::1 - - "GET /images/9_1543645658904_2-3.png HTTP/1.1" 500 1569 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:24:57.746] [INFO] backend-http - ::1 - - "GET /images/10_1543657718379_image.png HTTP/1.1" 500 1569 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:24:57.755] [INFO] backend-http - ::1 - - "GET /images/11_1545368937071_233.jpg HTTP/1.1" 500 1569 "http://localhost/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:25:19.108] [INFO] backend-http - ::ffff:183.172.153.168 - - "GET / HTTP/1.1" 200 1378 "" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:25:19.160] [WARN] socket_log - >>a user disconnected
+[2019-05-23T00:25:19.197] [INFO] backend-http - ::ffff:183.172.153.168 - - "GET /static/js/manifest.d8b61fd31b4d0b27ebf2.js HTTP/1.1" 200 6810 "http://183.172.153.168/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:25:19.197] [INFO] backend-http - ::ffff:183.172.153.168 - - "GET /static/liveplayer.js HTTP/1.1" 200 262025 "http://183.172.153.168/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:25:19.198] [INFO] backend-http - ::ffff:183.172.153.168 - - "GET /static/css/app.4002ce28fb808ec76bf7c17832cace31.css HTTP/1.1" 200 221496 "http://183.172.153.168/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:25:19.199] [INFO] backend-http - ::ffff:183.172.153.168 - - "GET /static/js/app.090f29dee06032e62b10.js HTTP/1.1" 200 30795 "http://183.172.153.168/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:25:19.206] [INFO] backend-http - ::ffff:183.172.153.168 - - "GET /static/js/vendor.52b07ff70b5d5dc44899.js HTTP/1.1" 200 1164651 "http://183.172.153.168/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:25:19.580] [INFO] socket_log - >>a user connected
+[2019-05-23T00:25:19.593] [INFO] backend-http - ::ffff:183.172.153.168 - - "GET /api/user/session HTTP/1.1" 200 96 "http://183.172.153.168/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:25:19.620] [INFO] backend-http - ::ffff:183.172.153.168 - - "GET /static/img/logo.10cbfa8.png HTTP/1.1" 200 10658 "http://183.172.153.168/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:25:19.683] [INFO] backend-http - ::ffff:183.172.153.168 - - "GET /favicon.ico HTTP/1.1" 200 10658 "http://183.172.153.168/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:25:19.762] [INFO] database - SELECT * FROM classes WHERE type=1 LIMIT 0,20[FILLED.]
+[2019-05-23T00:25:19.763] [INFO] backend-http - ::ffff:183.172.153.168 - - "POST /api/class/public/fetch HTTP/1.1" 200 3140 "http://183.172.153.168/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:25:19.827] [INFO] backend-http - ::1 - - "GET /images/1_1545325828944_english-learning-img.png HTTP/1.1" 500 1569 "http://183.172.153.168/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:25:19.827] [INFO] backend-http - ::1 - - "GET /images/2_1545325802767_music-theory-img.jpg HTTP/1.1" 500 1569 "http://183.172.153.168/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:25:19.851] [INFO] backend-http - ::1 - - "GET /images/3_1545325751016_C++-course-img.jpg HTTP/1.1" 500 1569 "http://183.172.153.168/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:25:19.851] [INFO] backend-http - ::1 - - "GET /images/9_1543645658904_2-3.png HTTP/1.1" 500 1569 "http://183.172.153.168/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:25:19.874] [INFO] backend-http - ::1 - - "GET /images/10_1543657718379_image.png HTTP/1.1" 500 1569 "http://183.172.153.168/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:25:19.874] [INFO] backend-http - ::1 - - "GET /images/11_1545368937071_233.jpg HTTP/1.1" 500 1569 "http://183.172.153.168/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:29:04.118] [INFO] backend-http - ::ffff:183.172.153.168 - - "GET /?nsukey=5O1MZ49hVbhMx7%2Fq1RGXjCi5HN56P2C34Z6f2MdfWI06KcjmYngteOTY6h%2BdFFD9XCVsfXL3oLf1A4pvzOI%2B4Vq4MirT3xHaRJZJDnw3aV%2BA%2BS6K7SibcIKz4wfrgTHplOPpYZk0aBFMXxohT%2F5sunzK7006a8SEy%2FFi7eUfK8sY7fQ%2F20A9xYU72c5uNzBAedJNHMEAgGk%2BhDfASeVa%2FA%3D%3D HTTP/1.1" 200 1378 "" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:29:04.202] [INFO] backend-http - ::ffff:183.172.153.168 - - "GET /static/css/app.4002ce28fb808ec76bf7c17832cace31.css HTTP/1.1" 304 - "http://183.172.153.168/?nsukey=5O1MZ49hVbhMx7%2Fq1RGXjCi5HN56P2C34Z6f2MdfWI06KcjmYngteOTY6h%2BdFFD9XCVsfXL3oLf1A4pvzOI%2B4Vq4MirT3xHaRJZJDnw3aV%2BA%2BS6K7SibcIKz4wfrgTHplOPpYZk0aBFMXxohT%2F5sunzK7006a8SEy%2FFi7eUfK8sY7fQ%2F20A9xYU72c5uNzBAedJNHMEAgGk%2BhDfASeVa%2FA%3D%3D" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:29:04.203] [INFO] backend-http - ::ffff:183.172.153.168 - - "GET /static/liveplayer.js HTTP/1.1" 304 - "http://183.172.153.168/?nsukey=5O1MZ49hVbhMx7%2Fq1RGXjCi5HN56P2C34Z6f2MdfWI06KcjmYngteOTY6h%2BdFFD9XCVsfXL3oLf1A4pvzOI%2B4Vq4MirT3xHaRJZJDnw3aV%2BA%2BS6K7SibcIKz4wfrgTHplOPpYZk0aBFMXxohT%2F5sunzK7006a8SEy%2FFi7eUfK8sY7fQ%2F20A9xYU72c5uNzBAedJNHMEAgGk%2BhDfASeVa%2FA%3D%3D" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:29:04.208] [INFO] backend-http - ::ffff:183.172.153.168 - - "GET /static/js/manifest.d8b61fd31b4d0b27ebf2.js HTTP/1.1" 304 - "http://183.172.153.168/?nsukey=5O1MZ49hVbhMx7%2Fq1RGXjCi5HN56P2C34Z6f2MdfWI06KcjmYngteOTY6h%2BdFFD9XCVsfXL3oLf1A4pvzOI%2B4Vq4MirT3xHaRJZJDnw3aV%2BA%2BS6K7SibcIKz4wfrgTHplOPpYZk0aBFMXxohT%2F5sunzK7006a8SEy%2FFi7eUfK8sY7fQ%2F20A9xYU72c5uNzBAedJNHMEAgGk%2BhDfASeVa%2FA%3D%3D" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:29:04.209] [INFO] backend-http - ::ffff:183.172.153.168 - - "GET /static/js/vendor.52b07ff70b5d5dc44899.js HTTP/1.1" 304 - "http://183.172.153.168/?nsukey=5O1MZ49hVbhMx7%2Fq1RGXjCi5HN56P2C34Z6f2MdfWI06KcjmYngteOTY6h%2BdFFD9XCVsfXL3oLf1A4pvzOI%2B4Vq4MirT3xHaRJZJDnw3aV%2BA%2BS6K7SibcIKz4wfrgTHplOPpYZk0aBFMXxohT%2F5sunzK7006a8SEy%2FFi7eUfK8sY7fQ%2F20A9xYU72c5uNzBAedJNHMEAgGk%2BhDfASeVa%2FA%3D%3D" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:29:04.209] [INFO] backend-http - ::ffff:183.172.153.168 - - "GET /static/js/app.090f29dee06032e62b10.js HTTP/1.1" 304 - "http://183.172.153.168/?nsukey=5O1MZ49hVbhMx7%2Fq1RGXjCi5HN56P2C34Z6f2MdfWI06KcjmYngteOTY6h%2BdFFD9XCVsfXL3oLf1A4pvzOI%2B4Vq4MirT3xHaRJZJDnw3aV%2BA%2BS6K7SibcIKz4wfrgTHplOPpYZk0aBFMXxohT%2F5sunzK7006a8SEy%2FFi7eUfK8sY7fQ%2F20A9xYU72c5uNzBAedJNHMEAgGk%2BhDfASeVa%2FA%3D%3D" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:29:04.597] [INFO] socket_log - >>a user connected
+[2019-05-23T00:29:04.612] [INFO] backend-http - ::ffff:183.172.153.168 - - "GET /api/user/session HTTP/1.1" 304 - "http://183.172.153.168/home?nsukey=5O1MZ49hVbhMx7%2Fq1RGXjCi5HN56P2C34Z6f2MdfWI06KcjmYngteOTY6h%2BdFFD9XCVsfXL3oLf1A4pvzOI%2B4Vq4MirT3xHaRJZJDnw3aV%2BA%2BS6K7SibcIKz4wfrgTHplOPpYZk0aBFMXxohT%2F5sunzK7006a8SEy%2FFi7eUfK8sY7fQ%2F20A9xYU72c5uNzBAedJNHMEAgGk%2BhDfASeVa%2FA%3D%3D" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:29:04.641] [INFO] backend-http - ::ffff:183.172.153.168 - - "GET /static/img/logo.10cbfa8.png HTTP/1.1" 304 - "http://183.172.153.168/home?nsukey=5O1MZ49hVbhMx7%2Fq1RGXjCi5HN56P2C34Z6f2MdfWI06KcjmYngteOTY6h%2BdFFD9XCVsfXL3oLf1A4pvzOI%2B4Vq4MirT3xHaRJZJDnw3aV%2BA%2BS6K7SibcIKz4wfrgTHplOPpYZk0aBFMXxohT%2F5sunzK7006a8SEy%2FFi7eUfK8sY7fQ%2F20A9xYU72c5uNzBAedJNHMEAgGk%2BhDfASeVa%2FA%3D%3D" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:29:05.295] [INFO] database - SELECT * FROM classes WHERE type=1 LIMIT 0,20[FILLED.]
+[2019-05-23T00:29:05.296] [INFO] backend-http - ::ffff:183.172.153.168 - - "POST /api/class/public/fetch HTTP/1.1" 200 3140 "http://183.172.153.168/home?nsukey=5O1MZ49hVbhMx7%2Fq1RGXjCi5HN56P2C34Z6f2MdfWI06KcjmYngteOTY6h%2BdFFD9XCVsfXL3oLf1A4pvzOI%2B4Vq4MirT3xHaRJZJDnw3aV%2BA%2BS6K7SibcIKz4wfrgTHplOPpYZk0aBFMXxohT%2F5sunzK7006a8SEy%2FFi7eUfK8sY7fQ%2F20A9xYU72c5uNzBAedJNHMEAgGk%2BhDfASeVa%2FA%3D%3D" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:29:05.352] [INFO] backend-http - ::1 - - "GET /images/1_1545325828944_english-learning-img.png HTTP/1.1" 500 1569 "http://183.172.153.168/home?nsukey=5O1MZ49hVbhMx7%2Fq1RGXjCi5HN56P2C34Z6f2MdfWI06KcjmYngteOTY6h%2BdFFD9XCVsfXL3oLf1A4pvzOI%2B4Vq4MirT3xHaRJZJDnw3aV%2BA%2BS6K7SibcIKz4wfrgTHplOPpYZk0aBFMXxohT%2F5sunzK7006a8SEy%2FFi7eUfK8sY7fQ%2F20A9xYU72c5uNzBAedJNHMEAgGk%2BhDfASeVa%2FA%3D%3D" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:29:05.352] [INFO] backend-http - ::1 - - "GET /images/2_1545325802767_music-theory-img.jpg HTTP/1.1" 500 1569 "http://183.172.153.168/home?nsukey=5O1MZ49hVbhMx7%2Fq1RGXjCi5HN56P2C34Z6f2MdfWI06KcjmYngteOTY6h%2BdFFD9XCVsfXL3oLf1A4pvzOI%2B4Vq4MirT3xHaRJZJDnw3aV%2BA%2BS6K7SibcIKz4wfrgTHplOPpYZk0aBFMXxohT%2F5sunzK7006a8SEy%2FFi7eUfK8sY7fQ%2F20A9xYU72c5uNzBAedJNHMEAgGk%2BhDfASeVa%2FA%3D%3D" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:29:05.377] [INFO] backend-http - ::1 - - "GET /images/3_1545325751016_C++-course-img.jpg HTTP/1.1" 500 1569 "http://183.172.153.168/home?nsukey=5O1MZ49hVbhMx7%2Fq1RGXjCi5HN56P2C34Z6f2MdfWI06KcjmYngteOTY6h%2BdFFD9XCVsfXL3oLf1A4pvzOI%2B4Vq4MirT3xHaRJZJDnw3aV%2BA%2BS6K7SibcIKz4wfrgTHplOPpYZk0aBFMXxohT%2F5sunzK7006a8SEy%2FFi7eUfK8sY7fQ%2F20A9xYU72c5uNzBAedJNHMEAgGk%2BhDfASeVa%2FA%3D%3D" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:29:05.377] [INFO] backend-http - ::1 - - "GET /images/9_1543645658904_2-3.png HTTP/1.1" 500 1569 "http://183.172.153.168/home?nsukey=5O1MZ49hVbhMx7%2Fq1RGXjCi5HN56P2C34Z6f2MdfWI06KcjmYngteOTY6h%2BdFFD9XCVsfXL3oLf1A4pvzOI%2B4Vq4MirT3xHaRJZJDnw3aV%2BA%2BS6K7SibcIKz4wfrgTHplOPpYZk0aBFMXxohT%2F5sunzK7006a8SEy%2FFi7eUfK8sY7fQ%2F20A9xYU72c5uNzBAedJNHMEAgGk%2BhDfASeVa%2FA%3D%3D" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:29:05.396] [INFO] backend-http - ::1 - - "GET /images/10_1543657718379_image.png HTTP/1.1" 500 1569 "http://183.172.153.168/home?nsukey=5O1MZ49hVbhMx7%2Fq1RGXjCi5HN56P2C34Z6f2MdfWI06KcjmYngteOTY6h%2BdFFD9XCVsfXL3oLf1A4pvzOI%2B4Vq4MirT3xHaRJZJDnw3aV%2BA%2BS6K7SibcIKz4wfrgTHplOPpYZk0aBFMXxohT%2F5sunzK7006a8SEy%2FFi7eUfK8sY7fQ%2F20A9xYU72c5uNzBAedJNHMEAgGk%2BhDfASeVa%2FA%3D%3D" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:29:05.396] [INFO] backend-http - ::1 - - "GET /images/11_1545368937071_233.jpg HTTP/1.1" 500 1569 "http://183.172.153.168/home?nsukey=5O1MZ49hVbhMx7%2Fq1RGXjCi5HN56P2C34Z6f2MdfWI06KcjmYngteOTY6h%2BdFFD9XCVsfXL3oLf1A4pvzOI%2B4Vq4MirT3xHaRJZJDnw3aV%2BA%2BS6K7SibcIKz4wfrgTHplOPpYZk0aBFMXxohT%2F5sunzK7006a8SEy%2FFi7eUfK8sY7fQ%2F20A9xYU72c5uNzBAedJNHMEAgGk%2BhDfASeVa%2FA%3D%3D" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+[2019-05-23T00:29:09.966] [WARN] socket_log - >>a user disconnected
+[2019-05-23T00:30:28.411] [INFO] backend-http - ::ffff:183.172.153.168 - - "GET /home HTTP/1.1" 200 1378 "" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.1 Safari/605.1.15"
+[2019-05-23T00:30:28.419] [INFO] backend-http - ::ffff:183.172.153.168 - - "GET /static/liveplayer.js HTTP/1.1" 200 262025 "http://183.172.153.168/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.1 Safari/605.1.15"
+[2019-05-23T00:30:28.426] [INFO] backend-http - ::ffff:183.172.153.168 - - "GET /static/js/manifest.d8b61fd31b4d0b27ebf2.js HTTP/1.1" 200 6810 "http://183.172.153.168/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.1 Safari/605.1.15"
+[2019-05-23T00:30:28.427] [INFO] backend-http - ::ffff:183.172.153.168 - - "GET /static/js/app.090f29dee06032e62b10.js HTTP/1.1" 200 30795 "http://183.172.153.168/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.1 Safari/605.1.15"
+[2019-05-23T00:30:28.428] [INFO] backend-http - ::ffff:183.172.153.168 - - "GET /static/css/app.4002ce28fb808ec76bf7c17832cace31.css HTTP/1.1" 200 221496 "http://183.172.153.168/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.1 Safari/605.1.15"
+[2019-05-23T00:30:28.431] [INFO] backend-http - ::ffff:183.172.153.168 - - "GET /static/js/vendor.52b07ff70b5d5dc44899.js HTTP/1.1" 200 1164651 "http://183.172.153.168/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.1 Safari/605.1.15"
+[2019-05-23T00:30:31.858] [INFO] socket_log - >>a user connected
+[2019-05-23T00:30:31.880] [INFO] backend-http - ::ffff:183.172.153.168 - - "GET /api/user/session HTTP/1.1" 200 96 "http://183.172.153.168/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.1 Safari/605.1.15"
+[2019-05-23T00:30:31.893] [INFO] backend-http - ::ffff:183.172.153.168 - - "GET /static/img/logo.10cbfa8.png HTTP/1.1" 200 10658 "http://183.172.153.168/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.1 Safari/605.1.15"
+[2019-05-23T00:30:32.076] [INFO] backend-http - ::ffff:183.172.153.168 - - "GET /favicon.ico HTTP/1.1" 200 10658 "http://183.172.153.168/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.1 Safari/605.1.15"
+[2019-05-23T00:30:32.080] [INFO] database - SELECT * FROM classes WHERE type=1 LIMIT 0,20[FILLED.]
+[2019-05-23T00:30:32.081] [INFO] backend-http - ::ffff:183.172.153.168 - - "POST /api/class/public/fetch HTTP/1.1" 200 3140 "http://183.172.153.168/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.1 Safari/605.1.15"
+[2019-05-23T00:30:32.128] [INFO] backend-http - ::1 - - "GET /images/1_1545325828944_english-learning-img.png HTTP/1.1" 500 1569 "http://183.172.153.168/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.1 Safari/605.1.15"
+[2019-05-23T00:30:32.204] [INFO] backend-http - ::1 - - "GET /images/2_1545325802767_music-theory-img.jpg HTTP/1.1" 500 1569 "http://183.172.153.168/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.1 Safari/605.1.15"
+[2019-05-23T00:30:32.226] [INFO] backend-http - ::1 - - "GET /images/3_1545325751016_C++-course-img.jpg HTTP/1.1" 500 1569 "http://183.172.153.168/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.1 Safari/605.1.15"
+[2019-05-23T00:30:32.297] [INFO] backend-http - ::1 - - "GET /images/10_1543657718379_image.png HTTP/1.1" 500 1569 "http://183.172.153.168/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.1 Safari/605.1.15"
+[2019-05-23T00:30:32.298] [INFO] backend-http - ::1 - - "GET /images/9_1543645658904_2-3.png HTTP/1.1" 500 1569 "http://183.172.153.168/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.1 Safari/605.1.15"
+[2019-05-23T00:30:32.298] [INFO] backend-http - ::1 - - "GET /images/11_1545368937071_233.jpg HTTP/1.1" 500 1569 "http://183.172.153.168/home" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.1 Safari/605.1.15"

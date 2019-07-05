@@ -1,0 +1,2 @@
+webpackJsonp([20],{BCwb:function(e,t){},w1tz:function(e,t,i){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var n=i("GV9C"),r=i.n(n),s={props:{size:Array,vid:String},mounted:function(){r()({wrap:"#player",width:this.size[0],height:this.size[1],vid:this.vid})}},a={render:function(){var e=this.$createElement;return(this._self._c||e)("div",{attrs:{id:"player"}})},staticRenderFns:[]};var d=i("VU/8")(s,a,!1,function(e){i("BCwb")},"data-v-302bfe14",null);t.default=d.exports}});
+//# sourceMappingURL=20.fe18477c0a0413d632d5.js.map
