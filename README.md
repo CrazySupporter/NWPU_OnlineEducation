@@ -24,6 +24,8 @@ An online video curriculum platform project for online Education by team in NWPU
 完成部分代码框架与接口配备~~届时会将部分代码push至Code的Branch~~  
 ~~已经将一部分的前端代码上传至Cod分支~~
 已合并至master  
+## 2019-7-5 10:03:45  
+更新部分后端代码
 
 # **关于文档**  
 对于代码的上传最好通过
